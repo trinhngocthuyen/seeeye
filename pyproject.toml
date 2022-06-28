@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seeeye"
+version = "0.0.1"
+description = "CI/CD toolkits for mobile apps"
+readme = "README.md"
+authors = [{ name = "Thuyen Trinh", email = "trinhngocthuyen@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["ci", "cd", "ci/cd", "mobile", "ios"]
+dependencies = [
+    "retry",
+]
+requires-python = ">=3.8"
+
+[project.optional-dependencies]
+dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+
+[project.urls]
+Homepage = "https://github.com/trinhngocthuyen/seeeye"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+namespaces = true
+
+[tool.black]
+skip_string_normalization = true
