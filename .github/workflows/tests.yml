@@ -31,3 +31,18 @@ jobs:
         run: make install
       - name: Test
         run: make test
+
+  integration_test_ios:
+    runs-on: macOS-latest
+    name: integration-ios
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.py_version }}
+      - name: Install
+        run: make install
+      - name: Integration Test
+        run: sh scripts/integration_test_ios.sh
