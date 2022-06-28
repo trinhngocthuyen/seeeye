@@ -16,6 +16,7 @@ classifiers = [
 ]
 keywords = ["ci", "cd", "ci/cd", "mobile", "ios"]
 dependencies = [
+    "colorlog",
     "retry",
 ]
 requires-python = ">=3.8"
