@@ -1,7 +1,7 @@
-from .logging import LoggingMixin
+from .logger import LoggerMixin
 
 
 class BaseMixin(
-    LoggingMixin,
+    LoggerMixin,
 ):
     pass

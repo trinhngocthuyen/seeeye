@@ -1,7 +1,7 @@
 from cicd.core.logger import logger
 
 
-class LoggingMixin:
+class LoggerMixin:
     @property
     def logger(self):
         return logger

@@ -1,5 +1,7 @@
 import os
 
+from cicd.core.mixin.provider import ProviderMixin
 
-class Env:
+
+class Env(ProviderMixin):
     ci: bool = os.getenv('CI') == 'true'
