@@ -45,4 +45,4 @@ jobs:
       - name: Install
         run: make install
       - name: Integration Test
-        run: sh scripts/integration_test_ios.sh
+        run: make test.integration.ios

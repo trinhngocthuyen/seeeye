@@ -6,5 +6,8 @@ install:
 test:
 	. .venv/bin/activate && pytest
 
+test.integration.ios:
+	. .venv/bin/activate && sh scripts/integration_test_ios.sh
+
 format:
 	. .venv/bin/activate && isort . && black .
