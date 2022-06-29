@@ -1,3 +1,4 @@
+from functools import cached_property
 from typing import TypeVar
 
 from cicd.core.provider import ProviderInfo
@@ -15,14 +16,10 @@ class ProviderMixin:
         )
         return klazz()
 
-    @property
+    @cached_property
     def provider(self: T) -> T:
-        try:
-            return self._provider
-        except:
-            self._provider = self.as_provider()
-            return self._provider
+        return self.as_provider()
 
-    @property
+    @cached_property
     def provider_info(self) -> ProviderInfo:
         return ProviderInfo.resolve()
