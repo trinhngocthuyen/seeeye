@@ -18,6 +18,7 @@ keywords = ["ci", "cd", "ci/cd", "mobile", "ios"]
 dependencies = [
     "colorlog",
     "retry",
+    "PyYAML",
 ]
 requires-python = ">=3.8"
 
