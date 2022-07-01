@@ -5,7 +5,7 @@ from typing import Optional
 from cicd.core.logger import logger
 
 
-class ProjectMetadataMixin:
+class Metadata:
     @property
     def project_name(self):
         return self.xcodeproj_path.with_suffix('').name
