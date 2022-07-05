@@ -3,7 +3,9 @@ install:
 	python3 -m virtualenv .venv
 	. .venv/bin/activate && pip install -r requirements.txt
 
-test:
+test: test.py test.integration.ios
+
+test.py:
 	. .venv/bin/activate && pytest
 
 test.integration.ios:

@@ -30,7 +30,7 @@ jobs:
       - name: Install
         run: make install
       - name: Test
-        run: make test
+        run: make test.py
 
   integration_test_ios:
     runs-on: macOS-latest
