@@ -1,10 +1,19 @@
-from cicd.core.logger import logger
+import click
+
+from cicd.ios.mixin.test import TestMixin
+from cicd.ios.xcodebuild.cli import xcodebuild_opts
 
 
-class TestJob:
-    def run(self):
-        logger.warning(f'To be implemented <{self.__class__.__name__}>')
+class TestJob(TestMixin):
+    def run(self, **kwargs):
+        self.start_testing(**kwargs)
+
+
+@click.command()
+@xcodebuild_opts
+def cli(**kwargs):
+    TestJob().run(**kwargs)
 
 
 if __name__ == '__main__':
-    TestJob().run()
+    cli()

@@ -57,7 +57,7 @@ class XCBCmdMaker(CmdMaker):
             'destination': self.kwargs.get('destination') or default_destination,
         }
         xcargs = self.kwargs.get('xcargs', {})
-        actions = self.kwargs.get('actions', ['build'])
+        actions = self.kwargs.get('actions', [])
         if self.kwargs.get('clean'):
             actions.insert(0, 'clean')
 
@@ -104,8 +104,14 @@ class XCBAction:
 
 
 class XCBBuildAction(XCBAction):
-    pass
+    def run(self, **kwargs):
+        if not kwargs.get('actions'):
+            kwargs['actions'] = ['build']
+        return super().run(**kwargs)
 
 
 class XCBTestAction(XCBAction):
-    pass
+    def run(self, **kwargs):
+        if not kwargs.get('actions'):
+            kwargs['actions'] = ['test']
+        return super().run(**kwargs)
