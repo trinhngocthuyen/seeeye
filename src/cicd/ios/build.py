@@ -1,10 +1,19 @@
-from cicd.core.logger import logger
+import click
+
+from cicd.ios.mixin.build import BuildMixin
+from cicd.ios.xcodebuild.cli import xcodebuild_opts
 
 
-class BuildJob:
-    def run(self):
-        logger.warning(f'To be implemented <{self.__class__.__name__}>')
+class BuildJob(BuildMixin):
+    def run(self, **kwargs):
+        self.start_building(**kwargs)
+
+
+@click.command()
+@xcodebuild_opts
+def cli(**kwargs):
+    BuildJob().run(**kwargs)
 
 
 if __name__ == '__main__':
-    BuildJob().run()
+    cli()

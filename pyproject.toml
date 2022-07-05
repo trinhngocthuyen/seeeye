@@ -19,6 +19,7 @@ dependencies = [
     "colorlog",
     "retry",
     "PyYAML",
+    "click",
 ]
 requires-python = ">=3.8"
 
