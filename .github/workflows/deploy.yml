@@ -1,0 +1,34 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy-rc:
+        description: Deploy a RC version
+        type: bool
+      deploy-stable:
+        description: Deploy a stable version
+        type: bool
+
+jobs:
+  deploy-rc:
+    name: Deploy (RC)
+    if: ${{ inputs.deploy-rc }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exec
+        uses: trinhngocthuyen/gh-action-py-exec@main
+        with:
+          hook-version-file: VERSION
+          hook-version-suffix: .rc${{ github.run_id }}
+          pypi-token: ${{ secrets.PYPI_TOKEN }}
+
+  deploy-stable:
+    name: Deploy (stable)
+    if: ${{ inputs.deploy-stable }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Exec
+        uses: trinhngocthuyen/gh-action-py-exec@main
+        with:
+          pypi-token: ${{ secrets.PYPI_TOKEN }}
