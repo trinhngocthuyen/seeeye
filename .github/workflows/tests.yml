@@ -31,7 +31,7 @@ jobs:
           python-version: ${{ matrix.py_version }}
           hook-version-file: VERSION
           hook-version-suffix: .dev${{ github.run_id }}
-          makefile-target: test.py
+          makefile-target: install test.py
 
   integration_test_ios:
     runs-on: macOS-latest
@@ -42,4 +42,4 @@ jobs:
           python-version: 3.8
           hook-version-file: VERSION
           hook-version-suffix: .dev${{ github.run_id }}
-          makefile-target: test.integration.ios
+          makefile-target: install test.integration.ios
