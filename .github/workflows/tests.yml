@@ -26,24 +26,20 @@ jobs:
           #   py_version: 3.8
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install dependencies
-        uses: ./.github/actions/install
+      - name: Install
+        uses: trinhngocthuyen/gh-action-py-install
         with:
           python-version: ${{ matrix.py_version }}
-      - name: Test
+      - name: Test (py)
         run: make test.py
 
   integration_test_ios:
     runs-on: macOS-latest
     name: integration-ios
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install dependencies
-        uses: ./.github/actions/install
+      - name: Install
+        uses: trinhngocthuyen/gh-action-py-install
         with:
           python-version: 3.8
-      - name: Integration Test
+      - name: Test (integration)
         run: make test.integration.ios
