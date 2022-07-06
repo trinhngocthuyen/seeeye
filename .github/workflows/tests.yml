@@ -26,7 +26,8 @@ jobs:
           #   py_version: 3.8
 
     steps:
-      - uses: trinhngocthuyen/gh-action-py-exec@main
+      - name: Exec
+        uses: trinhngocthuyen/gh-action-py-exec@main
         with:
           python-version: ${{ matrix.py_version }}
           hook-version-file: VERSION
@@ -37,7 +38,8 @@ jobs:
     runs-on: macOS-latest
     name: integration-ios
     steps:
-      - uses: trinhngocthuyen/gh-action-py-exec@main
+      - name: Exec
+        uses: trinhngocthuyen/gh-action-py-exec@main
         with:
           python-version: 3.8
           hook-version-file: VERSION
