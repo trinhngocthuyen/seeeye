@@ -3,18 +3,25 @@ name: deploy
 on:
   workflow_dispatch:
     inputs:
-      deploy-rc:
-        description: Deploy a RC version
-        type: boolean
-      deploy-stable:
-        description: Deploy a stable version
-        type: boolean
+      pypi_release_type:
+        description: Deploy to PyPI
+        type: choice
+        options:
+          - rc
+          - stable
 
 jobs:
-  deploy-rc:
-    name: Deploy (RC)
-    if: ${{ inputs.deploy-rc }}
+  deploy-pypi:
+    name: Deploy to PyPI (${{ matrix.release_type }})
     runs-on: ubuntu-latest
+    if: ${{ inputs.pypi_release_type }} == ${{ matrix.release_type }}
+    strategy:
+      matrix:
+        include:
+          - release_type: rc
+            version_suffix: .rc${{ github.run_id }}
+          - release_type: stable
+            version_suffix: ''
     environment: production
     steps:
       - name: Exec
@@ -22,15 +29,4 @@ jobs:
         with:
           hook-version-file: VERSION
           hook-version-suffix: .rc${{ github.run_id }}
-          pypi-token: ${{ secrets.PYPI_TOKEN }}
-
-  deploy-stable:
-    name: Deploy (stable)
-    if: ${{ inputs.deploy-stable }}
-    runs-on: ubuntu-latest
-    environment: production
-    steps:
-      - name: Exec
-        uses: trinhngocthuyen/gh-action-py-exec@main
-        with:
           pypi-token: ${{ secrets.PYPI_TOKEN }}
