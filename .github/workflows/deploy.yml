@@ -5,10 +5,10 @@ on:
     inputs:
       deploy-rc:
         description: Deploy a RC version
-        type: bool
+        type: boolean
       deploy-stable:
         description: Deploy a stable version
-        type: bool
+        type: boolean
 
 jobs:
   deploy-rc:
