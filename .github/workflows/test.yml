@@ -41,7 +41,6 @@ jobs:
       - name: Exec
         uses: trinhngocthuyen/gh-action-py-exec@main
         with:
-          python-version: 3.8
           hook-version-file: VERSION
           hook-version-suffix: .dev${{ github.run_id }}
           makefile-target: install test.integration.ios
