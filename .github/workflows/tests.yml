@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: trinhngocthuyen/gh-action-py-install
+        uses: trinhngocthuyen/gh-action-py-install@main
         with:
           python-version: ${{ matrix.py_version }}
       - name: Test (py)
@@ -38,7 +38,7 @@ jobs:
     name: integration-ios
     steps:
       - name: Install
-        uses: trinhngocthuyen/gh-action-py-install
+        uses: trinhngocthuyen/gh-action-py-install@main
         with:
           python-version: 3.8
       - name: Test (integration)
