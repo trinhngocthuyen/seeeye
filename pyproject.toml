@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "seeeye"
-version = "0.0.1"
+dynamic = ["version"]
 description = "CI/CD toolkits for mobile apps"
 readme = "README.md"
 authors = [{ name = "Thuyen Trinh", email = "trinhngocthuyen@gmail.com" }]
@@ -28,6 +28,9 @@ dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
 
 [project.urls]
 Homepage = "https://github.com/trinhngocthuyen/seeeye"
+
+[tool.setuptools.dynamic]
+version = {file = "VERSION"}
 
 [tool.setuptools.packages.find]
 where = ["src"]

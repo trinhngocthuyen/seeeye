@@ -1,4 +1,5 @@
 name: test
+
 on:
   push:
     branches:
@@ -6,6 +7,10 @@ on:
   pull_request:
     branches:
       - main
+
+env:
+  VERSION_SUFFIX: ".dev${{ github.run_id }}"
+
 jobs:
   pytest:
     name: ${{ matrix.name }}

@@ -11,5 +11,10 @@ runs:
     - uses: actions/setup-python@v4
       with:
         python-version: ${{ inputs.python-version }}
+    - name: Hook version
+      run: |
+        echo -n ${VERSION_SUFFIX} >> VERSION
+        echo "version = $(cat VERSION)"
+      shell: bash
     - run: make install
       shell: bash
