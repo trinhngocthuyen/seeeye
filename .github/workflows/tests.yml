@@ -26,20 +26,20 @@ jobs:
           #   py_version: 3.8
 
     steps:
-      - name: Install
-        uses: trinhngocthuyen/gh-action-py-install@main
+      - uses: trinhngocthuyen/gh-action-py-exec@main
         with:
           python-version: ${{ matrix.py_version }}
-      - name: Test (py)
-        run: make test.py
+          hook-version-file: VERSION
+          hook-version-suffix: .dev${{ github.run_id }}
+          makefile-target: test.py
 
   integration_test_ios:
     runs-on: macOS-latest
     name: integration-ios
     steps:
-      - name: Install
-        uses: trinhngocthuyen/gh-action-py-install@main
+      - uses: trinhngocthuyen/gh-action-py-exec@main
         with:
           python-version: 3.8
-      - name: Test (integration)
-        run: make test.integration.ios
+          hook-version-file: VERSION
+          hook-version-suffix: .dev${{ github.run_id }}
+          makefile-target: test.integration.ios
