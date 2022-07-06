@@ -6,6 +6,7 @@ on:
       pypi_release_type:
         description: Deploy to PyPI
         type: choice
+        required: false
         options:
           - rc
           - stable
