@@ -15,6 +15,7 @@ jobs:
     name: Deploy (RC)
     if: ${{ inputs.deploy-rc }}
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Exec
         uses: trinhngocthuyen/gh-action-py-exec@main
@@ -27,6 +28,7 @@ jobs:
     name: Deploy (stable)
     if: ${{ inputs.deploy-stable }}
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Exec
         uses: trinhngocthuyen/gh-action-py-exec@main
