@@ -1,5 +1,6 @@
+import re
 from pathlib import Path
-from typing import Any, Dict, List, NewType, Union
+from typing import Any, Dict, List, Union
 
 
 class DataRepresentedObject:
@@ -26,3 +27,21 @@ class DataRepresentedObject:
     def save(self, path: Union[str, Path, None] = None, **kwargs):
         with open(path or self.path, 'w') as f:
             self._write_data(self.data, f, **kwargs)
+
+    def query(self, key: str) -> Union[Dict[str, Any], List[Dict[str, Any]], None]:
+        def str_or_int(s: str) -> Union[str, int]:
+            try:
+                return int(s)
+            except ValueError:
+                return s
+
+        key_cmps = [str_or_int(x) for x in re.split(r'\.|\[', key.replace(']', ''))]
+        cur = self.data
+        for cmp in key_cmps:
+            if isinstance(cmp, str) and isinstance(cur, dict) and cmp in cur:
+                cur = cur.get(cmp)
+            elif isinstance(cmp, int) and isinstance(cur, list) and len(cur) > cmp:
+                cur = cur[cmp]
+            else:
+                return None
+        return cur
