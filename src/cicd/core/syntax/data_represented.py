@@ -1,6 +1,8 @@
 import re
 from pathlib import Path
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Type, TypeVar, Union
+
+T = TypeVar('T', bound='DataRepresentedObject')
 
 
 class DataRepresentedObject:
@@ -28,7 +30,14 @@ class DataRepresentedObject:
         with open(path or self.path, 'w') as f:
             self._write_data(self.data, f, **kwargs)
 
-    def query(self, key: str) -> Union[Dict[str, Any], List[Dict[str, Any]], None]:
+    def as_type(self, t: Type[T]) -> T:
+        return t(data=self.data, path=self.path)
+
+    def query(
+        self,
+        key: str,
+        as_type: Optional[Type[T]] = None,
+    ) -> Union[T, Dict[str, Any], List[Dict[str, Any]], None]:
         def str_or_int(s: str) -> Union[str, int]:
             try:
                 return int(s)
@@ -43,5 +52,6 @@ class DataRepresentedObject:
             elif isinstance(cmp, int) and isinstance(cur, list) and len(cur) > cmp:
                 cur = cur[cmp]
             else:
-                return None
-        return cur
+                cur = None
+                break
+        return as_type(data=cur, path=self.path) if as_type else cur
