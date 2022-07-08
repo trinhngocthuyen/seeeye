@@ -12,3 +12,7 @@ class JSON(DataRepresentedObject):
 
     def to_str(self, **kwargs) -> str:
         return json.dumps(self.data, **kwargs)
+
+    @staticmethod
+    def from_str(s: str) -> 'JSON':
+        return JSON(data=json.loads(s))
