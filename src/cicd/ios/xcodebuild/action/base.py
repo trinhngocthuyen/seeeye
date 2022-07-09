@@ -1,6 +1,6 @@
 import subprocess
 from shlex import quote
-from typing import Any, Dict, List, Optional, Union
+from typing import Optional
 
 from cicd.core.logger import logger
 from cicd.ios.project.metadata import Metadata
@@ -100,18 +100,4 @@ class XCBAction:
         ]
         cmd = ' | '.join(x for x in [maker.make() for maker in makers] if x)
         logger.info(f'$ {cmd}')
-        subprocess.run(cmd, check=True, shell=True)
-
-
-class XCBBuildAction(XCBAction):
-    def run(self, **kwargs):
-        if not kwargs.get('actions'):
-            kwargs['actions'] = ['build']
-        return super().run(**kwargs)
-
-
-class XCBTestAction(XCBAction):
-    def run(self, **kwargs):
-        if not kwargs.get('actions'):
-            kwargs['actions'] = ['test']
-        return super().run(**kwargs)
+        return subprocess.run(cmd, check=True, shell=True)

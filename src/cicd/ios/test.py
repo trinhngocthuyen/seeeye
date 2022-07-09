@@ -10,6 +10,7 @@ class TestJob(TestMixin):
 
 
 @click.command()
+@click.option('--test-without-building', is_flag=True, help='Test without building')
 @xcodebuild_opts
 def cli(**kwargs):
     TestJob().run(**kwargs)
