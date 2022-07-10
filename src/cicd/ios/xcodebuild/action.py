@@ -95,8 +95,8 @@ class XCBAction:
     def run(self, **kwargs):
         makers = [
             XCBCmdMaker(**kwargs),
-            LogCmdMaker(**kwargs),
             TeeCmdMaker(**kwargs),
+            LogCmdMaker(**kwargs),
         ]
         cmd = ' | '.join(x for x in [maker.make() for maker in makers] if x)
         logger.info(f'$ {cmd}')
