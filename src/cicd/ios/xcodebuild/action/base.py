@@ -98,6 +98,7 @@ class XCBAction:
             TeeCmdMaker(**kwargs),
             LogCmdMaker(**kwargs),
         ]
-        cmd = ' | '.join(x for x in [maker.make() for maker in makers] if x)
+        cmd = 'set -o pipefail && '
+        cmd += ' | '.join(x for x in [maker.make() for maker in makers] if x)
         logger.info(f'$ {cmd}')
         return subprocess.run(cmd, check=True, shell=True)
