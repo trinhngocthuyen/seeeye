@@ -12,4 +12,11 @@ test.integration.ios:
 	. .venv/bin/activate && sh scripts/integration_test_ios.sh
 
 format:
-	. .venv/bin/activate && isort . && black .
+	. .venv/bin/activate && \
+		autoflake -r -i \
+			--remove-all-unused-imports \
+			--remove-unused-variables \
+			--exclude __init__.py \
+			. && \
+		isort . && \
+		black .

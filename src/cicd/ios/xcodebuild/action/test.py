@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Set
 
 from cicd.core.logger import logger
 from cicd.ios.syntax.xcresult import XCResult
