@@ -17,6 +17,6 @@ format:
 			--remove-all-unused-imports \
 			--remove-unused-variables \
 			--exclude __init__.py \
-			. && \
-		isort . && \
-		black .
+			src tests && \
+		isort src tests && \
+		black src tests
