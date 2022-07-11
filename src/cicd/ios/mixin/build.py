@@ -1,5 +1,3 @@
-from typing import Optional
-
 from cicd.ios.runner.xcodebuild import XCBBuildRunner
 
 
