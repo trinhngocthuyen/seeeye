@@ -13,6 +13,12 @@ class JSON(DataRepresentedObject):
     def to_str(self, **kwargs) -> str:
         return json.dumps(self.data, **kwargs)
 
+    def __getitem__(self, key):
+        return self.data.get(key)
+
+    def __setitem__(self, key, value):
+        self.data[key] = value
+
     @staticmethod
     def from_str(s: str) -> 'JSON':
         return JSON(data=json.loads(s))
