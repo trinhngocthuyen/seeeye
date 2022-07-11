@@ -9,7 +9,10 @@ class XCBBuildAction(XCBAction):
     def run(self, **kwargs):
         try:
             if not kwargs.get('actions'):
-                kwargs['actions'] = ['build']
+                if kwargs.get('build_for_testing'):
+                    kwargs['actions'] = ['build-for-testing']
+                else:
+                    kwargs['actions'] = ['build']
             return super().run(**kwargs)
         except Exception as e:
             raise BuildError(e)

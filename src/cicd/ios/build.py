@@ -10,6 +10,7 @@ class BuildJob(BuildMixin):
 
 
 @click.command()
+@click.option('--build-for-testing', is_flag=True, help='Build for testing')
 @xcodebuild_opts
 def cli(**kwargs):
     BuildJob().run(**kwargs)
