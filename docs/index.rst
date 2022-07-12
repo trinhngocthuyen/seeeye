@@ -8,9 +8,9 @@ Welcome to seeeye's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
 
-
+   api/cicd
 
 Indices and tables
 ==================

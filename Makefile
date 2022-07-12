@@ -20,3 +20,17 @@ format:
 			src tests && \
 		isort src tests && \
 		black src tests
+
+doc:
+	. .venv/bin/activate && \
+		cd docs && \
+		rm -rf api && \
+		sphinx-apidoc \
+			--implicit-namespaces \
+			--force \
+			--module-first \
+			--templatedir=_templates/apidoc \
+			--output-dir api \
+			../src/cicd && \
+		rm -rf api/modules.rst && \
+		make clean html
