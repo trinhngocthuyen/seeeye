@@ -3,7 +3,6 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.8"
-  commands:
-    - make install
-    - make doc
-    - cd docs
+  jobs:
+    pre_build:
+      - make install doc
