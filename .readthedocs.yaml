@@ -6,3 +6,4 @@ build:
   commands:
     - make install
     - make doc
+    - cd docs
