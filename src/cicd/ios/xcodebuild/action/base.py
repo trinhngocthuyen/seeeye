@@ -3,15 +3,14 @@ from shlex import quote
 from typing import Optional
 
 from cicd.core.logger import logger
-from cicd.ios.project.metadata import Metadata
+from cicd.ios.mixin.metadata import MetadataMixin
 
 __all__ = ['XCBAction']
 
 
-class CmdMaker:
+class CmdMaker(MetadataMixin):
     def __init__(self, **kwargs) -> None:
         self.kwargs = kwargs
-        self.metadata = Metadata()
 
     def make(self) -> Optional[str]:
         raise NotImplementedError
@@ -91,7 +90,7 @@ class TeeCmdMaker(CmdMaker):
             return f'tee {quote(log_path)}'
 
 
-class XCBAction:
+class XCBAction(MetadataMixin):
     def run(self, **kwargs):
         makers = [
             XCBCmdMaker(**kwargs),
