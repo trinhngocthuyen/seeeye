@@ -40,5 +40,5 @@ class XCBTestAction(XCBAction):
             raise TestError(xcresult, e)
 
     def _derived_data_path(self, **kwargs) -> Path:
-        # TODO: Run xcodebuild -showBuildSettings to get the default data path
-        return Path(kwargs.get('derived_data_path') or 'DerivedData')
+        path = kwargs.get('derived_data_path')
+        return Path(path) if path else self.metadata.default_derived_data

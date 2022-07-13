@@ -1,10 +1,13 @@
+import re
 import shutil
 import subprocess
 from functools import cached_property
 from pathlib import Path
+from shlex import quote
 from typing import List, Optional
 
 from cicd.core.logger import logger
+from cicd.core.utils.sh import sh
 
 
 class Metadata:
@@ -49,3 +52,14 @@ class Metadata:
             return f'bundle exec {name}'
         if shutil.which(name):
             return name
+
+    @cached_property
+    def default_derived_data(self) -> Path:
+        cmd = ['xcodebuild', '-showBuildSettings']
+        if self.xcworkspace_path:
+            cmd += ['-workspace', quote(str(self.xcworkspace_path))]
+            cmd += ['-scheme', quote(self.scheme)]
+        content = sh.run(cmd)
+        # Look for <path/to/Build/Products>
+        m = next(re.finditer(r'\s+BUILD_ROOT = (.*)', content))
+        return Path(m.group(1)).parent.parent
