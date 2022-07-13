@@ -132,4 +132,4 @@ dmypy.json
 
 # ---------------------
 tmp/
-docs/api/
+docs/api/cicd*

@@ -1,16 +1,12 @@
-.. seeeye documentation master file, created by
-   sphinx-quickstart on Mon Jul 11 15:56:30 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to seeeye's documentation!
-==================================
+.. include:: ../README.rst
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents
+   :caption: Table of Contents
+   :hidden:
 
-   api/cicd
+   api/reference
+   usage
+   contributing
 
 Indices and tables
 ==================

@@ -24,7 +24,7 @@ format:
 doc:
 	. .venv/bin/activate && \
 		cd docs && \
-		rm -rf api && \
+		rm -rf api/cicd* && \
 		sphinx-apidoc \
 			--implicit-namespaces \
 			--force \
