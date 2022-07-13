@@ -2,7 +2,7 @@ seeeye (CI/CD toolkits for mobile apps)
 =======================================
 
 .. _readthedocs: https://seeeye.readthedocs.io/
-.. _CONTRIBUTING.rst: https://github.com/trinhngocthuyen/seeeye/blob/main/CONTRIBUTING.rst
+.. _contributing guidelines: https://seeeye.readthedocs.io/en/latest/contributing.html
 .. _fastlane: https://fastlane.tools
 
 .. image:: https://github.com/trinhngocthuyen/seeeye/workflows/test/badge.svg
@@ -20,14 +20,18 @@ Installation
 
    $ pip install --upgrade seeeye
 
+Usage
+-----
+
+Kindly check out the related docs on readthedocs_.
 
 Documentation
 -------------
 
-Documentation of this project is available on readthedocs_.
+Kindly check out the related docs on readthedocs_.
 
 Contributing
 ------------
 
-Refer to `CONTRIBUTING.rst`_ for the guidelines for contributing to this project.
+Refer to the `contributing guidelines`_ for how to contribute to this project.
 
