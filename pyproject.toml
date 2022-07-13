@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "seeeye"
 dynamic = ["version"]
 description = "CI/CD toolkits for mobile apps"
-readme = "README.md"
+readme = "README.rst"
 authors = [{ name = "Thuyen Trinh", email = "trinhngocthuyen@gmail.com" }]
 license = { file = "LICENSE" }
 classifiers = [
