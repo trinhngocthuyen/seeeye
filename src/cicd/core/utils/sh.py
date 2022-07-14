@@ -3,6 +3,8 @@ import signal
 import subprocess
 from typing import Optional
 
+from cicd.core.logger import logger
+
 
 class Shell:
     class ExecError(Exception):
@@ -16,6 +18,9 @@ class Shell:
         if 'capture_output' not in kwargs:
             kwargs['capture_output'] = True
         try:
+            log_cmd = kwargs.pop('log_cmd', False)
+            if log_cmd:
+                logger.info(f'$ {args[0]}')
             proc = subprocess.run(*args, **kwargs)
             if kwargs.get('capture_output'):
                 return proc.stdout.decode('utf-8').strip()
@@ -27,6 +32,11 @@ class Shell:
 
     def exec(self, *args, **kwargs):
         timeout = kwargs.pop('timeout', None)
+        log_cmd = kwargs.pop('log_cmd', False)
+        if isinstance(args[0], str):
+            kwargs['shell'] = True
+        if log_cmd:
+            logger.info(f'$ {args[0]}')
         proc = self.popen(*args, **kwargs)
         try:
             output, err = proc.communicate(timeout=timeout)
