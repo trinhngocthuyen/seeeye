@@ -1,6 +1,5 @@
 import re
 import shutil
-import subprocess
 from functools import cached_property
 from pathlib import Path
 from shlex import quote
@@ -44,11 +43,10 @@ class Metadata:
 
     @property
     def bundle_enabled(self) -> bool:
-        return (self.workdir / 'Gemfile').exists
+        return (self.workdir / 'Gemfile').exists()
 
     def resolve_program(self, name) -> Optional[str]:
-        proc = subprocess.run(['bundle', 'info', name], stdout=subprocess.DEVNULL)
-        if proc.returncode == 0:
+        if self.bundle_enabled:
             return f'bundle exec {name}'
         if shutil.which(name):
             return name

@@ -11,6 +11,7 @@ class TestJob(TestMixin):
 
 @click.command()
 @click.option('--test-without-building', is_flag=True, help='Test without building')
+@click.option('--cocoapods', is_flag=True, help='Run pod install beforehand')
 @xcodebuild_opts
 def cli(**kwargs):
     TestJob().run(**kwargs)

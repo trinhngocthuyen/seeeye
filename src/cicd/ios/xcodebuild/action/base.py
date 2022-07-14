@@ -1,7 +1,6 @@
 from shlex import quote
 from typing import Optional
 
-from cicd.core.logger import logger
 from cicd.core.utils.sh import sh
 from cicd.ios.mixin.metadata import MetadataMixin
 
@@ -99,5 +98,4 @@ class XCBAction(MetadataMixin):
         ]
         cmd = 'set -o pipefail && '
         cmd += ' | '.join(x for x in [maker.make() for maker in makers] if x)
-        logger.info(f'$ {cmd}')
-        return sh.exec(cmd, shell=True, timeout=kwargs.get('timeout'))
+        return sh.exec(cmd, timeout=kwargs.get('timeout'), log_cmd=True)
