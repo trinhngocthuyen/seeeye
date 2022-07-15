@@ -56,6 +56,7 @@ class XCBCmdMaker(CmdMaker):
         }
         xcargs = self.kwargs.get('xcargs', {})
         actions = self.kwargs.get('actions', [])
+        tests = self.kwargs.get('only_testing', [])
         if self.kwargs.get('clean'):
             actions.insert(0, 'clean')
 
@@ -66,6 +67,7 @@ class XCBCmdMaker(CmdMaker):
             for x in [f'-{k}', self.quote(v)]
             if v is not None
         ]
+        cmps += [x for test in tests for x in ['-only-testing', test]]
         if isinstance(xcargs, str):
             cmps += [xcargs]
         elif isinstance(xcargs, (tuple, list)):
