@@ -56,12 +56,19 @@ class Metadata(JSON):
 
 class TestItemData(JSON):
     @cached_property
-    def uri(self) -> str:
+    def uri(self) -> Optional[str]:
+        # NOTE: This uri is not available in Xcode 13.2.1
         return self.query('identifierURL._value')
 
     @cached_property
-    def uri_cmps(self) -> List[str]:
-        return self.uri.split('/')
+    def identifier(self) -> str:
+        return self.query('identifier._value').strip('()')
+
+    @cached_property
+    def name_cmps(self) -> List[str]:
+        if self.uri:
+            return self.uri.split('/')
+        return self.identifier.split('/')
 
     @property
     def fullname(self) -> str:
@@ -69,15 +76,15 @@ class TestItemData(JSON):
 
     @property
     def name(self) -> str:
-        return self.uri_cmps[-1]
+        return self.name_cmps[-1]
 
     @property
     def suite(self) -> str:
-        return self.uri_cmps[-2]
+        return self.name_cmps[-2]
 
     @property
     def target(self) -> str:
-        return self.uri_cmps[-3]
+        return self.query('target')
 
     @cached_property
     def status(self) -> str:
@@ -95,8 +102,8 @@ class TestItemData(JSON):
 class TestsData(JSON):
     @cached_property
     def summaries(self) -> List[TestItemData]:
-        def to_jsons(xs: list) -> List[JSON]:
-            return [JSON(data=x) for x in xs]
+        def to_jsons(xs: list, **extra_fields) -> List[JSON]:
+            return [JSON(data={**x, **extra_fields}) for x in xs]
 
         result = []
         to_traverse = to_jsons(
@@ -104,8 +111,12 @@ class TestsData(JSON):
         )
         while to_traverse:
             item = to_traverse.pop(0)
-            to_traverse += to_jsons(item.query('tests._values') or [])
-            to_traverse += to_jsons(item.query('subtests._values') or [])
+            # Workaround to pass `target` in lower Xcode versions.
+            # For example, `uri` (having target info) is not available in Xcode 13.2.1,
+            # So, we pass the target value to downstream items.
+            target = item.query('targetName._value') or item.query('target')
+            to_traverse += to_jsons(item.query('tests._values') or [], target=target)
+            to_traverse += to_jsons(item.query('subtests._values') or [], target=target)
             if 'testStatus' in item.data:
                 result.append(item.as_type(TestItemData))
         return result
