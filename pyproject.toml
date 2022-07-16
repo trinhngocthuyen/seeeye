@@ -38,3 +38,6 @@ namespaces = true
 
 [tool.black]
 skip_string_normalization = true
+
+[tool.pytest.ini_options]
+addopts = "-v"
