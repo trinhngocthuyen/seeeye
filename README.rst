@@ -34,4 +34,3 @@ Contributing
 ------------
 
 Refer to the `contributing guidelines`_ for how to contribute to this project.
-
