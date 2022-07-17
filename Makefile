@@ -13,13 +13,7 @@ test.integration.ios:
 
 format:
 	. .venv/bin/activate && \
-		autoflake -r -i \
-			--remove-all-unused-imports \
-			--remove-unused-variables \
-			--exclude __init__.py \
-			src tests && \
-		isort src tests && \
-		black src tests
+		pre-commit run --all-files
 
 doc:
 	. .venv/bin/activate && \
