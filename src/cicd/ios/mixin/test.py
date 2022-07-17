@@ -5,7 +5,12 @@ from .base_ios import BaseIOSMixin
 
 class TestMixin(BaseIOSMixin):
     def start_testing(self, **kwargs):
-        self.pre_run(**kwargs)
-        runner = XCBTestRunner()
-        runner.run(**kwargs)
-        self.post_run(**kwargs)
+        with self.step('pre-run'):
+            self.pre_run(**kwargs)
+
+        with self.step('run'):
+            runner = XCBTestRunner()
+            runner.run(**kwargs)
+
+        with self.step('post-run'):
+            self.post_run(**kwargs)

@@ -1,8 +1,11 @@
+from cicd.core.mixin.base import BaseMixin
+
 from .cocoapods import CocoaPodsMixin
 from .simulator import SimulatorMixin
 
 
 class BaseIOSMixin(
+    BaseMixin,
     SimulatorMixin,
     CocoaPodsMixin,
 ):
