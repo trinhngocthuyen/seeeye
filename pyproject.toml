@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "CI/CD toolkits for mobile apps"
 readme = "README.rst"
 authors = [{ name = "Thuyen Trinh", email = "trinhngocthuyen@gmail.com" }]
-license = { file = "LICENSE" }
+license = {text = "MIT"}
 classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",

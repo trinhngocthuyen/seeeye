@@ -8,6 +8,12 @@ seeeye (CI/CD toolkits for mobile apps)
 .. image:: https://github.com/trinhngocthuyen/seeeye/workflows/test/badge.svg
     :target: https://github.com/trinhngocthuyen/seeeye/actions/workflows/test.yml
 
+.. image:: https://img.shields.io/pypi/v/seeeye.svg
+    :target: https://pypi.org/project/seeeye
+
+.. image:: https://img.shields.io/pypi/l/seeeye.svg
+    :target: https://github.com/trinhngocthuyen/seeeye/blob/main/LICENSE
+
 ``seeeye`` is a Python package providing various CI/CD toolkits for mobile projects, especially iOS projects. While many iOS projects favor fastlane_, this package attempts to brings convenient usages to projects where Python is the favorable choice for scripting.
 
 Installation
