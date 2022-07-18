@@ -30,6 +30,11 @@ jobs:
           hook-version-file: VERSION
           hook-version-suffix: .dev${{ github.run_id }}
           makefile-target: install test.py
+      - name: Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          flags: unittests
 
   integration_test_ios:
     runs-on: macOS-latest
@@ -41,8 +46,3 @@ jobs:
           hook-version-file: VERSION
           hook-version-suffix: .dev${{ github.run_id }}
           makefile-target: install test.integration.ios
-      - name: Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          files: ./coverage.xml
-          flags: unittests

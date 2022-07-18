@@ -11,6 +11,9 @@ seeeye (CI/CD toolkits for mobile apps)
 .. image:: https://img.shields.io/pypi/v/seeeye.svg
     :target: https://pypi.org/project/seeeye
 
+.. image:: https://codecov.io/gh/trinhngocthuyen/seeeye/branch/main/graph/badge.svg
+    :target: https://codecov.io/gh/trinhngocthuyen/seeeye
+
 .. image:: https://img.shields.io/pypi/l/seeeye.svg
     :target: https://github.com/trinhngocthuyen/seeeye/blob/main/LICENSE
 
