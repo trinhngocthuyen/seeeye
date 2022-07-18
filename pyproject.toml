@@ -24,7 +24,7 @@ dependencies = [
 requires-python = ">=3.8"
 
 [project.optional-dependencies]
-dev = ["black", "autoflake", "bumpver", "isort", "pip-tools", "pytest", "twine", "setuptools>=61.0.0", "sphinx_rtd_theme", "pre-commit"]
+dev = ["black", "autoflake", "bumpver", "isort", "pip-tools", "pytest", "twine", "setuptools>=61.0.0", "sphinx_rtd_theme", "pre-commit", "pytest-cov"]
 
 [project.urls]
 Homepage = "https://github.com/trinhngocthuyen/seeeye"
@@ -40,4 +40,4 @@ namespaces = true
 skip_string_normalization = true
 
 [tool.pytest.ini_options]
-addopts = "-v"
+addopts = "-v --cov=. --cov-report=xml"

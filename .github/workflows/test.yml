@@ -41,3 +41,8 @@ jobs:
           hook-version-file: VERSION
           hook-version-suffix: .dev${{ github.run_id }}
           makefile-target: install test.integration.ios
+      - name: Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.xml
+          flags: unittests
