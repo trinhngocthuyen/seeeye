@@ -18,6 +18,12 @@ jobs:
           - os: ubuntu-latest
             name: py38-ubuntu
             py_version: 3.8
+          - os: ubuntu-latest
+            name: py39-ubuntu
+            py_version: 3.9
+          - os: ubuntu-latest
+            name: py310-ubuntu
+            py_version: 3.10
           # - os: macOS-latest
           #   name: py38-mac
           #   py_version: 3.8
