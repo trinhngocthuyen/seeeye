@@ -1,2 +1,6 @@
-ignore:
-  - tests
+coverage:
+  status:
+    project:
+      default:
+        paths:
+          - src/cicd
