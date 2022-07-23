@@ -23,6 +23,7 @@ dependencies = [
     "retry",
     "PyYAML",
     "click",
+    "GitPython",
 ]
 requires-python = ">=3.8"
 
