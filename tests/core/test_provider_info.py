@@ -1,6 +1,6 @@
 import pytest
 
-from cicd.core.provider import ProviderInfo
+from cicd.core.provider.info import ProviderInfo
 
 
 @pytest.mark.parametrize(
