@@ -1,0 +1,49 @@
+name: integration-test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-12 # https://github.com/actions/virtual-environments (xcode 13.4.1)
+    outputs:
+      artifacts-name: ${{ steps.exec.outputs.artifacts-name }}
+      artifacts-path: ${{ steps.exec.outputs.artifacts-path }}
+    steps:
+      - id: exec
+        name: Exec
+        uses: trinhngocthuyen/gh-action-py-exec@main
+        with:
+          makefile-target: install test.integration.ios ACTION=build
+          artifacts-upload-name: build
+          artifacts-upload-path: examples/ios/DerivedData/Build/Products
+
+  test:
+    runs-on: macos-12
+    needs: build
+    strategy:
+      matrix:
+        idx: [1, 2]
+    steps:
+      - id: exec
+        name: Exec
+        uses: trinhngocthuyen/gh-action-py-exec@main
+        with:
+          makefile-target: install test.integration.ios ACTION=test
+          artifacts-download-name: ${{ needs.build.outputs.artifacts-name }}
+          artifacts-download-path: ${{ needs.build.outputs.artifacts-path }}
+
+  coverage:
+    runs-on: macos-12
+    needs: test
+    steps:
+      - id: exec
+        name: Exec
+        uses: trinhngocthuyen/gh-action-py-exec@main
+        with:
+          makefile-target: install test.integration.ios ACTION=coverage
