@@ -43,6 +43,7 @@ Supported CI/CD Providers
 -------------------------
 
 - [x] Github Actions
+- [ ] CircleCI (planning)
 - [ ] Gitlab CI/CD (planning)
 
 Contributing

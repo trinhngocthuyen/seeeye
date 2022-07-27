@@ -1,0 +1,17 @@
+version: 2.1
+
+jobs:
+  integration-test-ios:
+    macos:
+      xcode: 12.5.1
+    steps:
+      - checkout
+      - run:
+          name: Exec
+          command: make install test.integration.ios
+
+workflows:
+  version: 2
+  integration-test-ios:
+    jobs:
+      - integration-test-ios
