@@ -39,6 +39,12 @@ Documentation
 
 Kindly check out the related docs on readthedocs_.
 
+Supported CI/CD Providers
+-------------------------
+
+- [x] Github Actions
+- [ ] Gitlab CI/CD (planning)
+
 Contributing
 ------------
 
