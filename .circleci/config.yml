@@ -2,8 +2,8 @@ version: 2.1
 
 jobs:
   integration-test-ios:
-    macos:
-      xcode: 12.5.1
+    macos: # https://circleci.com/docs/using-macos
+      xcode: 13.4.1
     steps:
       - checkout
       - run:
