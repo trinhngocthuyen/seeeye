@@ -43,7 +43,7 @@ jobs:
           flags: unittests
 
   integration_test_ios:
-    runs-on: macOS-latest
+    runs-on: macos-12 # https://github.com/actions/virtual-environments (xcode 13.4.1)
     name: integration-ios
     steps:
       - name: Exec
