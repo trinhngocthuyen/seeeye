@@ -3,6 +3,13 @@ coverage:
   status:
     project:
       default:
+        target: auto
         threshold: 5%
         paths:
           - src/cicd
+    patch:
+      default:
+        target: 60%
+
+ignore:
+  - test/**/*
