@@ -9,6 +9,8 @@ from .base import XCBAction
 
 
 class TestError(Exception):
+    __test__ = False
+
     def __init__(self, xcresult: XCResult, *args: object) -> None:
         super().__init__(*args)
         self.xcresult = xcresult
@@ -43,7 +45,9 @@ class XCBTestAction(XCBAction):
             after = self.xcresult_paths()
             paths = list(set(after).difference(before))
             if len(paths) == 0:
-                raise RuntimeError('Cannot detect any xcresult bundle')
+                raise RuntimeError(
+                    f'Cannot detect any xcresult bundle. DerivedData: {self.derived_data_path}'
+                )
             elif len(paths) > 1:
                 logger.warning(f'Detected more than one xcresult bundle: {paths}')
             else:
