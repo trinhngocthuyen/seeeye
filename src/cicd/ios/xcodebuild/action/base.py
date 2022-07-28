@@ -1,6 +1,9 @@
+from functools import cached_property
+from pathlib import Path
 from shlex import quote
 from typing import Optional
 
+from cicd.core.action import Action
 from cicd.core.utils.sh import sh
 from cicd.ios.mixin.metadata import MetadataMixin
 
@@ -91,8 +94,9 @@ class TeeCmdMaker(CmdMaker):
             return f'tee {quote(log_path)}'
 
 
-class XCBAction(MetadataMixin):
-    def run(self, **kwargs):
+class XCBAction(Action, MetadataMixin):
+    def run(self):
+        kwargs = self.kwargs
         makers = [
             XCBCmdMaker(**kwargs),
             TeeCmdMaker(**kwargs),
@@ -101,3 +105,8 @@ class XCBAction(MetadataMixin):
         cmd = 'set -o pipefail && '
         cmd += ' | '.join(x for x in [maker.make() for maker in makers] if x)
         return sh.exec(cmd, timeout=kwargs.get('timeout'), log_cmd=True)
+
+    @cached_property
+    def derived_data_path(self) -> Path:
+        path = self.kwargs.get('derived_data_path')
+        return Path(path) if path else self.metadata.default_derived_data
