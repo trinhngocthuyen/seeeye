@@ -16,10 +16,10 @@ def sut(bag):
 
     this = Runner()
     with mock.patch(
-        'cicd.ios.runner.base.Runner.action',
-        new_callable=mock.PropertyMock(return_value=bag.action),
+        'cicd.ios.runner.base.Runner.action_cls',
+        new_callable=mock.PropertyMock(return_value=bag.action_cls),
     ):
-        bag.action.run = run_action
+        bag.action_cls().run = run_action
         yield this
 
 

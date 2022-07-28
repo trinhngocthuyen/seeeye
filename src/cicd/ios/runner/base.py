@@ -1,7 +1,8 @@
-from typing import Optional
+from typing import Optional, Type
 
 from retry import retry
 
+from cicd.core.action import Action
 from cicd.core.logger import logger
 from cicd.core.utils.timeout import timeout
 
@@ -29,16 +30,16 @@ class Runner:
             else:
                 retry_kwargs = kwargs
 
+            action = self.action_cls(**retry_kwargs)
+
             try:
-                return self.action.run(**retry_kwargs)
+                return action.run()
             except Exception as e:
                 ctx['error'] = e
                 raise e
             finally:
                 ctx['idx'] = ctx.idx + 1
 
-        if not self.action:
-            return
         if not timeout_in_sec:
             return run_without_timeout()
 
@@ -49,5 +50,5 @@ class Runner:
         return run_with_timeout()
 
     @property
-    def action(self):
-        pass
+    def action_cls(self) -> Type[Action]:
+        raise NotImplementedError

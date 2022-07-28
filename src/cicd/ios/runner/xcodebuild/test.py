@@ -1,13 +1,11 @@
-from functools import cached_property
-
 from cicd.ios.runner.base import Runner
 from cicd.ios.xcodebuild.action import TestError, XCBTestAction
 
 
 class XCBTestRunner(Runner):
-    @cached_property
-    def action(self):
-        return XCBTestAction()
+    @property
+    def action_cls(self):
+        return XCBTestAction
 
     def run(self, **kwargs):
         def retry_kwargs_fn(kwargs: dict, ctx: Runner.RetryContext):

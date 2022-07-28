@@ -1,4 +1,6 @@
+from contextlib import contextmanager
 from pathlib import Path
+from typing import List
 
 from cicd.core.logger import logger
 from cicd.ios.syntax.xcresult import XCResult
@@ -13,32 +15,37 @@ class TestError(Exception):
 
 
 class XCBTestAction(XCBAction):
-    def run(self, **kwargs) -> XCResult:
-        def _xcresult_paths():
-            return set(self._derived_data_path(**kwargs).glob('Logs/Test/*.xcresult'))
+    xcresult: XCResult
 
-        xcresult_paths_before = _xcresult_paths()
-
-        def collect_xcresult():
-            paths = list(_xcresult_paths().difference(xcresult_paths_before))
-            if not paths:
-                raise RuntimeError('Cannot detect any xcresult bundle')
-            logger.info(f'Detected xcresult bundles: {paths}')
-            # TODO: Handle multiple xcresult bundles
-            return XCResult(path=paths[0])
-
+    def run(self) -> XCResult:
+        kwargs = self.kwargs
         try:
             if not kwargs.get('actions'):
                 if kwargs.get('test_without_building'):
                     kwargs['actions'] = ['test-without-building']
                 else:
                     kwargs['actions'] = ['test']
-            super().run(**kwargs)
-            return collect_xcresult()
+            with self.collect_xcresults():
+                super().run()
+            return self.xcresult
         except Exception as e:
-            xcresult = collect_xcresult()
-            raise TestError(xcresult, e)
+            raise TestError(self.xcresult, e)
 
-    def _derived_data_path(self, **kwargs) -> Path:
-        path = kwargs.get('derived_data_path')
-        return Path(path) if path else self.metadata.default_derived_data
+    def xcresult_paths(self) -> List[Path]:
+        return list(self.derived_data_path.glob('Logs/Test/*.xcresult'))
+
+    @contextmanager
+    def collect_xcresults(self):
+        before = self.xcresult_paths()
+        try:
+            yield
+        finally:
+            after = self.xcresult_paths()
+            paths = list(set(after).difference(before))
+            if len(paths) == 0:
+                raise RuntimeError('Cannot detect any xcresult bundle')
+            elif len(paths) > 1:
+                logger.warning(f'Detected more than one xcresult bundle: {paths}')
+            else:
+                logger.info(f'Detected xcresult bundles: {paths}')
+            self.xcresult = XCResult(path=paths[0])
