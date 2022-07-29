@@ -34,7 +34,7 @@ jobs:
         name: Exec
         uses: trinhngocthuyen/gh-action-py-exec@main
         with:
-          makefile-target: install test.integration.ios ACTION=test
+          makefile-target: install test.integration.ios ACTION=test SHARD_IDX=${{ matrix.idx }}
           artifacts-download-name: ${{ needs.build.outputs.artifacts-name }}
           artifacts-download-path: ${{ needs.build.outputs.artifacts-path }}
 

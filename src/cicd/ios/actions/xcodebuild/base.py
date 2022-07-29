@@ -125,4 +125,6 @@ class XCBAction(IOSAction, MetadataMixin):
         ]
         cmd = 'set -o pipefail && '
         cmd += ' | '.join(x for x in [maker.make() for maker in makers] if x)
-        return sh.exec(cmd, timeout=kwargs.get('timeout'), log_cmd=True)
+        return sh.exec(
+            cmd, timeout=kwargs.get('timeout'), capture_output=False, log_cmd=True
+        )

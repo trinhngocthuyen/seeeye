@@ -16,6 +16,8 @@ function _exec_build() {
 function _exec_test() {
     python3 -m cicd.ios.test \
         --retries 1 \
+        --shards 2 \
+        --shard-idx ${SHARD_IDX:-0} \
         --derived-data-path DerivedData \
         --test-without-building
 }
