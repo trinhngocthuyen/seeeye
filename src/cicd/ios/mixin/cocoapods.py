@@ -5,7 +5,11 @@ from .metadata import MetadataMixin
 
 class CocoaPodsMixin(MetadataMixin):
     def pod(self, cmd: str):
-        sh.exec('{} {}'.format(self.metadata.resolve_program('pod'), cmd), log_cmd=True)
+        sh.exec(
+            '{} {}'.format(self.metadata.resolve_program('pod'), cmd),
+            capture_output=False,
+            log_cmd=True,
+        )
 
     def pod_install(self):
         self.pod('install')

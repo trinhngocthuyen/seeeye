@@ -4,6 +4,8 @@ import click
 
 
 def xcodebuild_opts(func):
+    @click.option('--shard-idx', type=int, help='The shard idx (starting with 1)')
+    @click.option('--shards', type=int, help='Number of shards')
     @click.option('--timeout', type=int, help='Timeout (s) of the xcodebuild task')
     @click.option(
         '--xcargs',

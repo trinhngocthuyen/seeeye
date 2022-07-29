@@ -37,6 +37,11 @@ class Shell:
             kwargs['shell'] = True
         if log_cmd:
             logger.info(f'$ {args[0]}')
+
+        if kwargs.pop('capture_output', True):
+            kwargs['stdout'] = subprocess.PIPE
+            kwargs['stderr'] = subprocess.PIPE
+
         proc = self.popen(*args, **kwargs)
         try:
             output, err = proc.communicate(timeout=timeout)
