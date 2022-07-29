@@ -3,6 +3,8 @@ from cicd.ios.xcodebuild.action import TestError, XCBTestAction
 
 
 class XCBTestRunner(Runner):
+    '''A (runner) class to test an iOS project (backed by ``XCTestAction``).'''
+
     @property
     def action_cls(self):
         return XCBTestAction

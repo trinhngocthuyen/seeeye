@@ -95,7 +95,30 @@ class TeeCmdMaker(CmdMaker):
 
 
 class XCBAction(Action, MetadataMixin):
+    '''A class that interacts with the xcodebuild command.
+
+    It is up to subclasses to guarantee params are passed valid.
+    For example, ``only_testing`` and ``build_for_testing`` should not co-exist.
+    When both are declared, the action is not responsible for choosing which one should be picked up.
+
+    :param workspace: Path to the ``.xcworkspace`` file.
+    :param project: Path to the ``.xcodeproj`` file.
+    :param xctestrun: Path to the xctestrun bundle.
+    :param target: Target to build.
+    :param scheme: Scheme.
+    :param configuration: The configuration (ex. Debug/Release).
+    :param derived_data_path: The derived data path.
+    :param sdk: The sdk (ex. iphonesimulator).
+    :param destination: The destination (ex. "platform=iOS Simulator,name=EX").
+    :param clean: Whether to do a clean build/test.
+    :param only_testing: The list of tests to execute.
+    :param actions: The actions (clean, build, test, archive, profile...).
+    :param xcargs: The overriden build settings. Can be a str, list, or dict. Examples: ``"ONLY_ACTIVE_ARCH=YES"``, ``["ONLY_ACTIVE_ARCH=YES", "DEBUG_INFORMATION_FORMAT=dwarf"]``, ``{"ONLY_ACTIVE_ARCH": "YES", "DEBUG_INFORMATION_FORMAT": "dward"}``
+    '''
+
     def run(self):
+        '''Execute the action'''
+
         kwargs = self.kwargs
         makers = [
             XCBCmdMaker(**kwargs),

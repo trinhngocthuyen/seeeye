@@ -8,7 +8,20 @@ from cicd.core.utils.timeout import timeout
 
 
 class Runner:
+    '''A class that wraps the execution of actions.
+
+    A runner executes the backed action under the hood. It adds some extensions
+    to the execution such as timeout, retries, etc.
+
+    :param timeout: The timeout in seconds of the runner execution.
+    :param retries: The number of action retries.
+    :param retry_kwargs_fn: The function to update the ``kwargs`` in the retry.
+    :type retry_kwargs_fn: Callable[[Dict[str, Any], RetryContext], Dict[str, Any]]
+    '''
+
     class RetryContext(dict):
+        '''Intermediate data passed around retries.'''
+
         @property
         def idx(self) -> int:
             return self.get('idx', 0)

@@ -17,9 +17,20 @@ class TestError(Exception):
 
 
 class XCBTestAction(XCBAction):
+    '''A class that iteracts with the xcodebuild command,
+    particularly for test actions.
+    '''
+
     xcresult: XCResult
 
     def run(self) -> XCResult:
+        '''Execute the action
+
+        :raises: The ``TestError`` embedding the xcresult of the test session.
+        :return: The ``XCResult`` object corresponding to the test session.
+        :rtype: XCResult
+        '''
+
         kwargs = self.kwargs
         try:
             if not kwargs.get('actions'):
@@ -38,6 +49,7 @@ class XCBTestAction(XCBAction):
 
     @contextmanager
     def collect_xcresults(self):
+        '''Collect the xcresults generated after an action.'''
         before = self.xcresult_paths()
         try:
             yield
