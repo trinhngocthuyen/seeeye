@@ -9,4 +9,4 @@ class IOSAction(Action, MetadataMixin):
     @cached_property
     def derived_data_path(self) -> Path:
         path = self.kwargs.get('derived_data_path')
-        return Path(path) if path else self.metadata.default_derived_data
+        return Path(path) if path else self.metadata.default_derived_data_path

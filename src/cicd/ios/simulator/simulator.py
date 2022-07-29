@@ -13,7 +13,7 @@ __all__ = ['Simulator']
 
 class SimCtlMixin:
     def simctl(self, *args, **kwargs):
-        return sh.run('xcrun simctl {}'.format(' '.join(args)), **kwargs)
+        return sh.exec('xcrun simctl {}'.format(' '.join(args)), **kwargs)
 
 
 class Runtime(dict):
@@ -120,7 +120,7 @@ class Simulator(dict, SimCtlMixin):
 
     @staticmethod
     def load():
-        data = JSON.from_str(sh.run('xcrun simctl list --json'))
+        data = JSON.from_str(sh.exec('xcrun simctl list --json'))
         Simulator._runtimes = [Runtime(x) for x in data['runtimes']]
         Simulator._device_types = [DeviceType(x) for x in data['devicetypes']]
         Simulator._devices = [
