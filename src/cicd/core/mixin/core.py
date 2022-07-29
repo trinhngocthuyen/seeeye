@@ -3,7 +3,7 @@ from .logger import LoggerMixin
 from .step import StepMixin
 
 
-class BaseMixin(
+class CoreMixin(
     LoggerMixin,
     GitMixin,
     StepMixin,

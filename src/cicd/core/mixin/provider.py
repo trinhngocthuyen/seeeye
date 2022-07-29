@@ -7,14 +7,27 @@ T = TypeVar('T', bound='ProviderMixin')
 
 
 class ProviderMixin:
-    __provider_info__: Optional[ProviderInfo] = None
+    '''A mixin that provides helpers to resolve the responsible class
+    corresponding to the current CI provider.
 
-    def as_provider(self: T) -> T:
-        return self.provider_cls()()
+    In the following example, ``Env`` is a ``ProviderMixin``. When running in Github Actions, ``Env``'s provider is resolved to ``GithubEnv``.
+
+    >>> class Env(ProviderMixin):
+    >>>     ...
+    >>> class GithubEnv(Env): # in cicd.providers.github.env
+    >>>     ...
+    >>> class GitlabEnv(Env): # in cicd.providers.gitlab.env
+    >>>     ...
+
+    :notes: Use this mixin on the abstract class, not the concrete class.
+    '''
+
+    __provider_info__: Optional[ProviderInfo] = None
 
     @cached_property
     def provider(self: T) -> T:
-        return self.as_provider()
+        '''Resolve the object of the corresponding provider-class.'''
+        return self.provider_cls()()
 
     @property
     def provider_info(self) -> ProviderInfo:

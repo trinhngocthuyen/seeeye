@@ -5,6 +5,8 @@ from typing import Optional
 
 
 class ProviderInfo:
+    '''A data class that holds info of the CI provider such as Github Actions, Gitlab, or CircleCI.'''
+
     shared: Optional['ProviderInfo'] = None
 
     def __init__(self, name: str, module: str) -> None:
@@ -13,6 +15,8 @@ class ProviderInfo:
 
     @staticmethod
     def resolve_name() -> str:
+        '''Resolve the name of the CI provider.'''
+
         if os.getenv('GITLAB_CI') == 'true':
             return 'gitlab'
         if os.getenv('GITHUB_ACTIONS') == 'true':
@@ -21,6 +25,12 @@ class ProviderInfo:
 
     @staticmethod
     def resolve() -> 'ProviderInfo':
+        '''Resolve the CI provider info.
+
+        Classes of the provider must be placed under ``cicd.providers.<name>``.
+        They will be automatically loaded when resolving the provider info.
+        '''
+
         name = ProviderInfo.resolve_name()
         module = f'cicd.providers.{name}'
         provider = importlib.import_module(module)

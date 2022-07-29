@@ -4,6 +4,8 @@ from git.repo import Repo
 
 
 class GitMixin:
+    '''A mixin that provides helpers for ``git`` operations.'''
+
     @cached_property
     def repo(self) -> Repo:
         return Repo()

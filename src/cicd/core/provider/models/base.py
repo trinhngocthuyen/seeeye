@@ -58,6 +58,20 @@ def model(
     dtype: Type[D],
     to_list: bool = False,
 ):
+    '''A decorator to convert json data to model/list of models.
+
+    .. code-block:: python
+
+        class Model:
+            @model(Project, to_list=True)
+            def get_projects(self):
+                ...
+
+            @model(Project)
+            def get_project(self):
+                ...
+    '''
+
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
