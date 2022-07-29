@@ -1,7 +1,7 @@
 import click
 
+from cicd.ios.actions.xcodebuild.cli import xcodebuild_opts
 from cicd.ios.mixin.build import BuildMixin
-from cicd.ios.xcodebuild.cli import xcodebuild_opts
 
 
 class BuildJob(BuildMixin):

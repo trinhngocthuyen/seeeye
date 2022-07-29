@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from cicd.ios.xcodebuild.action.build import BuildError, XCBBuildAction
+from cicd.ios.actions.xcodebuild.build import BuildError, XCBBuildAction
 
 
 @pytest.fixture

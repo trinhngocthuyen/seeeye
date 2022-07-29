@@ -1,10 +1,8 @@
-from functools import cached_property
-from pathlib import Path
 from shlex import quote
 from typing import Optional
 
-from cicd.core.action import Action
 from cicd.core.utils.sh import sh
+from cicd.ios.actions.base import IOSAction
 from cicd.ios.mixin.metadata import MetadataMixin
 
 __all__ = ['XCBAction']
@@ -94,7 +92,7 @@ class TeeCmdMaker(CmdMaker):
             return f'tee {quote(log_path)}'
 
 
-class XCBAction(Action, MetadataMixin):
+class XCBAction(IOSAction, MetadataMixin):
     '''A class that interacts with the xcodebuild command.
 
     It is up to subclasses to guarantee params are passed valid.
@@ -128,8 +126,3 @@ class XCBAction(Action, MetadataMixin):
         cmd = 'set -o pipefail && '
         cmd += ' | '.join(x for x in [maker.make() for maker in makers] if x)
         return sh.exec(cmd, timeout=kwargs.get('timeout'), log_cmd=True)
-
-    @cached_property
-    def derived_data_path(self) -> Path:
-        path = self.kwargs.get('derived_data_path')
-        return Path(path) if path else self.metadata.default_derived_data

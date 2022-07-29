@@ -1,5 +1,5 @@
+from cicd.ios.actions.xcodebuild import TestError, XCBTestAction
 from cicd.ios.runner.base import Runner
-from cicd.ios.xcodebuild.action import TestError, XCBTestAction
 
 
 class XCBTestRunner(Runner):
