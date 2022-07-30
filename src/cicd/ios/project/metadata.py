@@ -52,12 +52,12 @@ class Metadata:
             return name
 
     @cached_property
-    def default_derived_data(self) -> Path:
+    def default_derived_data_path(self) -> Path:
         cmd = ['xcodebuild', '-showBuildSettings']
         if self.xcworkspace_path:
             cmd += ['-workspace', quote(str(self.xcworkspace_path))]
             cmd += ['-scheme', quote(self.scheme)]
-        content = sh.run(cmd)
+        content = sh.exec(cmd)
         # Look for <path/to/Build/Products>
         m = next(re.finditer(r'\s+BUILD_ROOT = (.*)', content))
         return Path(m.group(1)).parent.parent
