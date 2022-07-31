@@ -1,7 +1,12 @@
 #!/bin/bash
 set -e
 
-cd examples/ios
+if [[ ! -d integration_tests ]]; then
+    git submodule sync
+    git submodule update --init
+fi
+
+cd integration_tests
 mkdir -p tmp && printf 0 > tmp/test_retries_trace # To simulate test retries
 
 bundle install

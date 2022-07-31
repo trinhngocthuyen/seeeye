@@ -6,6 +6,9 @@ jobs:
       xcode: 13.4.1
     steps:
       - checkout
+      - run: |
+          git submodule sync
+          git submodule update --init
       - run:
           name: Exec
           command: make install test.integration.ios
