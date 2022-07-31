@@ -1,7 +1,12 @@
 #!/bin/bash
 set -e
 
-cd examples/ios
+if [[ ! -d integration_tests ]]; then
+    git submodule sync
+    git submodule update --init
+fi
+
+cd integration_tests
 mkdir -p tmp && printf 0 > tmp/test_retries_trace # To simulate test retries
 
 bundle install
@@ -23,7 +28,18 @@ function _exec_test() {
 }
 
 function _exec_coverage() {
-    echo "To be implemented"
+    # TODO: Replace implementation
+    echo "check files..." && find DerivedData
+    mkdir -p /tmp
+    curl -s https://codecov.io/bash -o /tmp/codecov.sh
+    local commit_sha=$(git show --no-patch --format="%P")
+    local repo_slug="trinhngocthuyen/seeeye-integration-test"
+    env GITHUB_SHA=${commit_sha} \
+        GITHUB_REPOSITORY=${repo_slug} \
+        GITHUB_HEAD_REF="" \
+        sh /tmp/codecov.sh \
+            -D DerivedData \
+            -r ${repo_slug}
 }
 
 if [[ -z ${ACTION} ]]; then
