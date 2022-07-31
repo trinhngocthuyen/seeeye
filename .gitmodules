@@ -1,0 +1,3 @@
+[submodule "integration_tests"]
+	path = integration_tests
+	url = git@github.com:trinhngocthuyen/seeeye-integration-test.git
