@@ -17,8 +17,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Exec
-        uses: trinhngocthuyen/gh-action-py-exec@main
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
+      - name: Publish to PyPI
+        uses: trinhngocthuyen/gh-actions/py/deploy@main
         with:
           hook-version-file: VERSION
           hook-version-suffix: .rc${{ github.run_id }}
@@ -30,7 +32,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     steps:
-      - name: Exec
-        uses: trinhngocthuyen/gh-action-py-exec@main
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
+      - name: Publish to PyPI
+        uses: trinhngocthuyen/gh-actions/py/deploy@main
         with:
           pypi-token: ${{ secrets.PYPI_TOKEN }}
