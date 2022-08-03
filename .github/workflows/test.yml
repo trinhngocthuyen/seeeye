@@ -29,13 +29,14 @@ jobs:
           #   py_version: 3.8
 
     steps:
-      - name: Exec
-        uses: trinhngocthuyen/gh-action-py-exec@main
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
         with:
           python-version: ${{ matrix.py_version }}
-          hook-version-file: VERSION
-          hook-version-suffix: .dev${{ github.run_id }}
-          makefile-target: install test.py
+      - name: Makefile
+        uses: trinhngocthuyen/gh-actions/core/makefile@main
+        with:
+          targets: install test.py
       - name: Codecov
         uses: codecov/codecov-action@v3
         with:

@@ -10,7 +10,7 @@ jobs:
     name: pre-commit
     runs-on: ubuntu-latest
     steps:
-      - name: Setup
-        uses: trinhngocthuyen/gh-action-py-exec@main
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.0

@@ -11,15 +11,16 @@ on:
 jobs:
   build:
     runs-on: macos-12 # https://github.com/actions/virtual-environments (xcode 13.4.1)
-    outputs:
-      artifacts-name: ${{ steps.exec.outputs.artifacts-name }}
-      artifacts-path: ${{ steps.exec.outputs.artifacts-path }}
     steps:
-      - id: exec
-        name: Exec
-        uses: trinhngocthuyen/gh-action-py-exec@main
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
+      - name: Makefile
+        uses: trinhngocthuyen/gh-actions/core/makefile@main
         with:
-          makefile-target: install test.integration.ios ACTION=build
+          targets: install test.integration.ios ACTION=build
+      - name: Upload artifacts
+        uses: trinhngocthuyen/gh-actions/core/artifacts@main
+        with:
           artifacts-upload-name: build
           artifacts-upload-path: examples/ios/DerivedData/Build/Products
 
@@ -29,17 +30,21 @@ jobs:
     strategy:
       matrix:
         idx: [1, 2]
-    outputs:
-      artifacts-name: ${{ steps.exec.outputs.artifacts-name }}
-      artifacts-path: ${{ steps.exec.outputs.artifacts-path }}
     steps:
-      - id: exec
-        name: Exec
-        uses: trinhngocthuyen/gh-action-py-exec@main
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
+      - name: Download artifacts
+        uses: trinhngocthuyen/gh-actions/core/artifacts@main
         with:
-          makefile-target: install test.integration.ios ACTION=test SHARD_IDX=${{ matrix.idx }}
-          artifacts-download-name: ${{ needs.build.outputs.artifacts-name }}
-          artifacts-download-path: ${{ needs.build.outputs.artifacts-path }}
+          artifacts-download-name: build
+          artifacts-download-path: examples/ios/DerivedData/Build/Products
+      - name: Makefile
+        uses: trinhngocthuyen/gh-actions/core/makefile@main
+        with:
+          targets: install test.integration.ios ACTION=test SHARD_IDX=${{ matrix.idx }}
+      - name: Upload artifacts
+        uses: trinhngocthuyen/gh-actions/core/artifacts@main
+        with:
           artifacts-upload-name: test
           artifacts-upload-path: examples/ios/DerivedData/Logs/Test
 
@@ -47,10 +52,14 @@ jobs:
     runs-on: macos-12
     needs: test
     steps:
-      - id: exec
-        name: Exec
-        uses: trinhngocthuyen/gh-action-py-exec@main
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
+      - name: Download artifacts
+        uses: trinhngocthuyen/gh-actions/core/artifacts@main
         with:
-          makefile-target: install test.integration.ios ACTION=coverage
-          artifacts-download-name: ${{ needs.test.outputs.artifacts-name }}
-          artifacts-download-path: ${{ needs.test.outputs.artifacts-path }}
+          artifacts-download-name: test
+          artifacts-download-path: examples/ios/DerivedData/Logs/Test
+      - name: Makefile
+        uses: trinhngocthuyen/gh-actions/core/makefile@main
+        with:
+          targets: install test.integration.ios ACTION=coverage
