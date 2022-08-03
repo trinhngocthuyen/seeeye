@@ -29,6 +29,9 @@ jobs:
     strategy:
       matrix:
         idx: [1, 2]
+    outputs:
+      artifacts-name: ${{ steps.exec.outputs.artifacts-name }}
+      artifacts-path: ${{ steps.exec.outputs.artifacts-path }}
     steps:
       - id: exec
         name: Exec
@@ -37,6 +40,8 @@ jobs:
           makefile-target: install test.integration.ios ACTION=test SHARD_IDX=${{ matrix.idx }}
           artifacts-download-name: ${{ needs.build.outputs.artifacts-name }}
           artifacts-download-path: ${{ needs.build.outputs.artifacts-path }}
+          artifacts-upload-name: test
+          artifacts-upload-path: examples/ios/DerivedData/Logs/Test
 
   coverage:
     runs-on: macos-12
@@ -47,3 +52,5 @@ jobs:
         uses: trinhngocthuyen/gh-action-py-exec@main
         with:
           makefile-target: install test.integration.ios ACTION=coverage
+          artifacts-download-name: ${{ needs.test.outputs.artifacts-name }}
+          artifacts-download-path: ${{ needs.test.outputs.artifacts-path }}
