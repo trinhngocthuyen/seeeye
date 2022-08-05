@@ -1,0 +1,20 @@
+targets:
+  - EX.app
+
+path_mapping:
+  from: '^\S+\/examples\/ios'
+  to: 'examples/ios'
+
+report:
+  groups:
+    EX:
+      paths:
+        - EX/**/*
+    Misc:
+      paths:
+        - '**/*'
+
+ignore:
+  - Pods/*
+  - '*.generated.*'
+  - '*Controller.swift'
