@@ -1,7 +1,64 @@
 import click
 
-from cicd.ios.actions.xcodebuild.cli import xcodebuild_opts
+from cicd.ios._cli.opts import Opts
 from cicd.ios.mixin.mono import MonoMixin as Mixin
+
+opts = Opts(
+    workspace=click.option('--workspace', type=str, help='Path to the xcworkspace'),
+    scheme=click.option('--scheme', type=str, help='Scheme'),
+    project=click.option('--project', type=str, help='Path to the xcodeproj'),
+    target=click.option('--target', type=str, help='Target'),
+    derived_data_path=click.option(
+        '--derived-data-path', type=str, help='DerivedData directory'
+    ),
+    configuration=click.option(
+        '--configuration', type=str, help='Configuration (ex. Debug, Release)'
+    ),
+    sdk=click.option('--sdk', type=str, help='SDK (ex. iphonesimulator)'),
+    destination=click.option(
+        '--destination',
+        type=str,
+        help='Destination (ex. "platform=iOS Simulator,name=iPhone 8"',
+    ),
+    clean=click.option('--clean', is_flag=True, help='Perform a clean build'),
+    log_formatter=click.option(
+        '--log-formatter', type=str, help='Log formatter (ex. xcpretty)'
+    ),
+    log_path=click.option(
+        '--log-path', type=str, help='Path to save the xcodebuild log'
+    ),
+    xcargs=click.option(
+        '--xcargs',
+        type=str,
+        multiple=True,
+        help='Overriden settings (ex. SETTINGS=VALUE)',
+    ),
+    timeout=click.option(
+        '--timeout', type=int, help='Timeout (s) of the xcodebuild task'
+    ),
+    shards=click.option('--shards', type=int, help='Number of shards'),
+    shard_idx=click.option(
+        '--shard-idx', type=int, help='The shard idx (starting with 1)'
+    ),
+)
+
+xcodebuild_opts = opts.use(
+    'workspace',
+    'scheme',
+    'project',
+    'target',
+    'derived_data_path',
+    'configuration',
+    'sdk',
+    'destination',
+    'clean',
+    'log_formatter',
+    'log_path',
+    'xcargs',
+    'timeout',
+    'shards',
+    'shard_idx',
+)
 
 
 @click.group()
@@ -28,7 +85,7 @@ def test(**kwargs):
 
 
 @cli.command()
-@xcodebuild_opts
+@opts.use('timeout', 'derived_data_path')
 def cov(**kwargs):
     Mixin().start_parsing_cov(**kwargs)
 
