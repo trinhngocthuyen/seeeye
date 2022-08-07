@@ -77,7 +77,7 @@ jobs:
           artifacts-upload-name: unit_test
           artifacts-upload-path: examples/ios/DerivedData/Logs/Test
 
-  coverage:
+  cov:
     runs-on: macos-12
     needs: unit_test
     steps:
@@ -91,4 +91,9 @@ jobs:
       - name: Makefile
         uses: trinhngocthuyen/gh-actions/core/makefile@main
         with:
-          targets: install test.integration.ios ACTION=coverage
+          targets: install test.integration.ios ACTION=cov
+      - name: Upload artifacts
+        uses: trinhngocthuyen/gh-actions/core/artifacts@main
+        with:
+          artifacts-upload-name: cov
+          artifacts-upload-path: examples/ios/.artifacts/cov

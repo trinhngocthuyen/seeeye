@@ -27,7 +27,9 @@ class DataRepresentedObject:
         raise NotImplementedError
 
     def save(self, path: Union[str, Path, None] = None, **kwargs):
-        with open(path or self.path, 'w') as f:
+        p = Path(path or self.path)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with open(p, 'w') as f:
             self._write_data(self.data, f, **kwargs)
 
     def as_type(self, t: Type[T]) -> T:

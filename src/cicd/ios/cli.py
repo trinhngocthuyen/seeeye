@@ -85,6 +85,8 @@ def test(**kwargs):
 
 
 @cli.command()
+@click.option('--config', help='Path to config file (default: .cov.yml)')
+@click.option('--export', help='Path to export cov json data')
 @opts.use('timeout', 'derived_data_path')
 def cov(**kwargs):
     Mixin().start_parsing_cov(**kwargs)
