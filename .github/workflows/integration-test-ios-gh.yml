@@ -24,7 +24,7 @@ jobs:
           artifacts-upload-name: build
           artifacts-upload-path: examples/ios/DerivedData/Build/Products
 
-  test:
+  ui_test:
     runs-on: macos-12
     needs: build
     strategy:
@@ -41,23 +41,47 @@ jobs:
       - name: Makefile
         uses: trinhngocthuyen/gh-actions/core/makefile@main
         with:
-          targets: install test.integration.ios ACTION=test SHARD_IDX=${{ matrix.idx }}
+          targets: install test.integration.ios ACTION=test SHARD_IDX=${{ matrix.idx }} ONLY_TESTING=EXUITests
       - name: Upload artifacts
         uses: trinhngocthuyen/gh-actions/core/artifacts@main
         with:
-          artifacts-upload-name: test
+          artifacts-upload-name: ui_test
           artifacts-upload-path: examples/ios/DerivedData/Logs/Test
 
-  coverage:
+  unit_test:
     runs-on: macos-12
-    needs: test
+    needs: build
+    strategy:
+      matrix:
+        idx: [1]
     steps:
       - name: Install
         uses: trinhngocthuyen/gh-actions/py/install@main
       - name: Download artifacts
         uses: trinhngocthuyen/gh-actions/core/artifacts@main
         with:
-          artifacts-download-name: test
+          artifacts-download-name: build
+          artifacts-download-path: examples/ios/DerivedData/Build/Products
+      - name: Makefile
+        uses: trinhngocthuyen/gh-actions/core/makefile@main
+        with:
+          targets: install test.integration.ios ACTION=test SHARD_IDX=${{ matrix.idx }} ONLY_TESTING=EXTests
+      - name: Upload artifacts
+        uses: trinhngocthuyen/gh-actions/core/artifacts@main
+        with:
+          artifacts-upload-name: unit_test
+          artifacts-upload-path: examples/ios/DerivedData/Logs/Test
+
+  coverage:
+    runs-on: macos-12
+    needs: unit_test
+    steps:
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
+      - name: Download artifacts
+        uses: trinhngocthuyen/gh-actions/core/artifacts@main
+        with:
+          artifacts-download-name: unit_test
           artifacts-download-path: examples/ios/DerivedData/Logs/Test
       - name: Makefile
         uses: trinhngocthuyen/gh-actions/core/makefile@main

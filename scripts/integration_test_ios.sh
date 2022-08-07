@@ -18,8 +18,14 @@ function _exec_build() {
 }
 
 function _exec_test() {
+    if [[ ! -z ${ONLY_TESTING} ]]; then
+        only_testing_args=(
+            --only-testing ${ONLY_TESTING}
+        )
+    fi
     python3 -m cicd.ios.cli test \
         ${common_args[@]} \
+        ${only_testing_args[@]} \
         --retries 1 \
         --shards 2 \
         --shard-idx ${SHARD_IDX:-0} \
