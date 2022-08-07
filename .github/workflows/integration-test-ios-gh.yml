@@ -30,6 +30,11 @@ jobs:
     strategy:
       matrix:
         idx: [1, 2]
+    env:
+      NUM_OF_SHARDS: 2
+      SHARD_IDX: ${{ matrix.idx }}
+      ACTION: test
+      ONLY_TESTING: EXUITests
     steps:
       - name: Install
         uses: trinhngocthuyen/gh-actions/py/install@main
@@ -41,7 +46,7 @@ jobs:
       - name: Makefile
         uses: trinhngocthuyen/gh-actions/core/makefile@main
         with:
-          targets: install test.integration.ios ACTION=test SHARD_IDX=${{ matrix.idx }} ONLY_TESTING=EXUITests
+          targets: install test.integration.ios
       - name: Upload artifacts
         uses: trinhngocthuyen/gh-actions/core/artifacts@main
         with:
@@ -51,9 +56,9 @@ jobs:
   unit_test:
     runs-on: macos-12
     needs: build
-    strategy:
-      matrix:
-        idx: [1]
+    env:
+       ACTION: test
+       ONLY_TESTING: EXTests
     steps:
       - name: Install
         uses: trinhngocthuyen/gh-actions/py/install@main
@@ -65,7 +70,7 @@ jobs:
       - name: Makefile
         uses: trinhngocthuyen/gh-actions/core/makefile@main
         with:
-          targets: install test.integration.ios ACTION=test SHARD_IDX=${{ matrix.idx }} ONLY_TESTING=EXTests
+          targets: install test.integration.ios
       - name: Upload artifacts
         uses: trinhngocthuyen/gh-actions/core/artifacts@main
         with:
