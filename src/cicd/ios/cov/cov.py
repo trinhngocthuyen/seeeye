@@ -21,7 +21,7 @@ class Cov:
 
     @cached_property
     def report(self) -> CovReport:
-        cmd = f'xcrun xccov view --report --json {quote(self.xcresult_path)}'
+        cmd = f'xcrun xccov view --report --json {quote(str(self.xcresult_path))}'
         raw = JSON.from_str(sh.exec(cmd))
         config = CovConfig(path=self.config_path)
         return CovReport(raw=raw, config=config)

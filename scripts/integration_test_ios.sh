@@ -4,8 +4,10 @@ set -e
 cd examples/ios
 mkdir -p tmp && printf 0 > tmp/test_retries_trace # To simulate test retries
 
-bundle install
-bundle exec pod install
+if [[ ! -d EX.xcworkspace || ! -d Pods ]]; then
+    bundle install
+    bundle exec pod install
+fi
 
 common_args=(
     --derived-data-path DerivedData
@@ -35,13 +37,15 @@ function _exec_test() {
         --test-without-building
 }
 
-function _exec_coverage() {
+function _exec_cov() {
     python3 -m cicd.ios.cli cov \
-        ${common_args[@]}
+        ${common_args[@]} \
+        --config .cov.yml \
+        --export .artifacts/cov/cov.json
 }
 
 if [[ -z ${ACTION} ]]; then
-    actions=(build test coverage)
+    actions=(build test cov)
 else
     actions=(${ACTION})
 fi
