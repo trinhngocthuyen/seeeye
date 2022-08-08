@@ -49,3 +49,4 @@ jobs:
         uses: trinhngocthuyen/gh-actions/git/push@main
         with:
           commit_msg: "CHORE: Bump version"
+          token: ${{ secrets.GH_TOKEN }}
