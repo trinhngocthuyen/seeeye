@@ -1,7 +1,7 @@
 import subprocess
+import typing as t
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
 
 from cicd.core.syntax.json import JSON
 
@@ -10,10 +10,10 @@ class XCResultTool:
     def exec(
         self,
         cmd: str,
-        cmd_args: Optional[List[str]] = None,
-        cmd_kwargs: Optional[Dict[str, Any]] = None,
+        cmd_args: t.Optional[t.List[str]] = None,
+        cmd_kwargs: t.Optional[t.Dict[str, t.Any]] = None,
         to_json=False,
-    ) -> Union[JSON, str]:
+    ) -> t.Union[JSON, str]:
         if cmd_args is None:
             cmd_args = []
         if cmd_kwargs is None:
@@ -28,8 +28,8 @@ class XCResultTool:
         return output
 
     def get(
-        self, path: Union[str, Path], id: Optional[str] = None, to_json=False
-    ) -> Union[JSON, str]:
+        self, path: t.Union[str, Path], id: t.Optional[str] = None, to_json=False
+    ) -> t.Union[JSON, str]:
         cmd_kwargs = {'path': str(path)}
         if id:
             cmd_kwargs['id'] = id
@@ -56,7 +56,7 @@ class Metadata(JSON):
 
 class TestItemData(JSON):
     @cached_property
-    def uri(self) -> Optional[str]:
+    def uri(self) -> t.Optional[str]:
         # NOTE: This uri is not available in Xcode 13.2.1
         return self.query('identifierURL._value')
 
@@ -65,7 +65,7 @@ class TestItemData(JSON):
         return self.query('identifier._value').strip('()')
 
     @cached_property
-    def name_cmps(self) -> List[str]:
+    def name_cmps(self) -> t.List[str]:
         if self.uri:
             return self.uri.split('/')
         return self.identifier.split('/')
@@ -101,8 +101,8 @@ class TestItemData(JSON):
 
 class TestsData(JSON):
     @cached_property
-    def summaries(self) -> List[TestItemData]:
-        def to_jsons(xs: list, **extra_fields) -> List[JSON]:
+    def summaries(self) -> t.List[TestItemData]:
+        def to_jsons(xs: list, **extra_fields) -> t.List[JSON]:
             return [JSON(data={**x, **extra_fields}) for x in xs]
 
         result = []
@@ -125,7 +125,7 @@ class TestsData(JSON):
 class XCResult(XCResultToolMixin):
     def __init__(
         self,
-        path: Optional[Union[str, Path]] = None,
+        path: t.Optional[t.Union[str, Path]] = None,
     ) -> None:
         self.path = path
 
@@ -141,13 +141,13 @@ class XCResult(XCResultToolMixin):
         return self.extract_raw(id=self.metadata.tests_ref_id).as_type(TestsData)
 
     @property
-    def test_summaries(self) -> List[TestItemData]:
+    def test_summaries(self) -> t.List[TestItemData]:
         return self.tests_data.summaries
 
     @property
-    def tests(self) -> List[str]:
+    def tests(self) -> t.List[str]:
         return [x.fullname for x in self.test_summaries]
 
     @property
-    def failed_tests(self) -> List[str]:
+    def failed_tests(self) -> t.List[str]:
         return [x.fullname for x in self.test_summaries if not x.is_success]

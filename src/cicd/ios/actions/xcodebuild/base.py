@@ -1,5 +1,5 @@
+import typing as t
 from shlex import quote
-from typing import Optional
 
 from cicd.core.utils.sh import sh
 from cicd.ios.actions.base import IOSAction
@@ -12,15 +12,15 @@ class CmdMaker(MetadataMixin):
     def __init__(self, **kwargs) -> None:
         self.kwargs = kwargs
 
-    def make(self) -> Optional[str]:
+    def make(self) -> t.Optional[str]:
         raise NotImplementedError
 
-    def quote(self, s) -> Optional[str]:
+    def quote(self, s) -> t.Optional[str]:
         return quote(str(s)) if s is not None else None
 
 
 class XCBCmdMaker(CmdMaker):
-    def make(self) -> Optional[str]:
+    def make(self) -> t.Optional[str]:
         xctestrun = self.kwargs.get('xctestrun')
         workspace = self.kwargs.get('workspace')
         scheme = self.kwargs.get('scheme')
@@ -79,14 +79,14 @@ class XCBCmdMaker(CmdMaker):
 
 
 class LogCmdMaker(CmdMaker):
-    def make(self) -> Optional[str]:
+    def make(self) -> t.Optional[str]:
         return self.kwargs.get('log_formatter') or self.metadata.resolve_program(
             'xcpretty'
         )
 
 
 class TeeCmdMaker(CmdMaker):
-    def make(self) -> Optional[str]:
+    def make(self) -> t.Optional[str]:
         log_path = self.kwargs.get('log_path')
         if log_path:
             return f'tee {quote(log_path)}'

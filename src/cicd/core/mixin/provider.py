@@ -1,9 +1,9 @@
+import typing as t
 from functools import cached_property
-from typing import Optional, TypeVar
 
 from cicd.core.provider.info import ProviderInfo
 
-T = TypeVar('T', bound='ProviderMixin')
+T = t.TypeVar('T', bound='ProviderMixin')
 
 
 class ProviderMixin:
@@ -22,7 +22,7 @@ class ProviderMixin:
     :notes: Use this mixin on the abstract class, not the concrete class.
     '''
 
-    __provider_info__: Optional[ProviderInfo] = None
+    __provider_info__: t.Optional[ProviderInfo] = None
 
     @cached_property
     def provider(self: T) -> T:

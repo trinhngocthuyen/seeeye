@@ -1,9 +1,9 @@
-from typing import Any, Dict, List, Optional, Tuple, Type, TypeVar, Union
+import typing as t
 
 import requests
 
-D = TypeVar('D', bound=dict)
-T = TypeVar('T', bound='Client')
+D = t.TypeVar('D', bound=dict)
+T = t.TypeVar('T', bound='Client')
 
 
 class Client:
@@ -12,8 +12,8 @@ class Client:
     Clients are per-class singletons.
     '''
 
-    BASE_URL: Optional[str] = None
-    token: Optional[str] = None
+    BASE_URL: t.Optional[str] = None
+    token: t.Optional[str] = None
 
     def __new__(cls):
         if hasattr(cls, 'instance') and isinstance(getattr(cls, 'instance'), cls):
@@ -22,7 +22,10 @@ class Client:
         return cls.instance
 
     def config(
-        self: T, base_url: Optional[str] = None, token: Optional[str] = None, **kwargs
+        self: T,
+        base_url: t.Optional[str] = None,
+        token: t.Optional[str] = None,
+        **kwargs,
     ) -> T:
         '''Config the client.
 
@@ -36,7 +39,7 @@ class Client:
             self.token = token
         return self
 
-    def make_headers(self) -> Dict[str, Any]:
+    def make_headers(self) -> t.Dict[str, t.Any]:
         '''Make up headers for each requests.
 
         Subclasses override this function to append/modify request headers.
@@ -49,8 +52,8 @@ class Client:
 
     def make_paging_params(
         self,
-        paging: Union[int, Tuple[int, int], List[int]],
-    ) -> Dict[str, Any]:
+        paging: t.Union[int, t.Tuple[int, int], t.List[int]],
+    ) -> t.Dict[str, t.Any]:
         '''Make up paging params for request params.'''
 
         if isinstance(paging, int):
@@ -63,10 +66,10 @@ class Client:
         self,
         endpoint: str,
         method: str = 'get',
-        as_type: Optional[Type[D]] = None,
+        as_type: t.Optional[t.Type[D]] = None,
         to_list: bool = False,
         **kwargs,
-    ) -> Optional[D]:
+    ) -> t.Optional[D]:
         '''Make an API request.
 
         :param endpoint: The API endpoint.

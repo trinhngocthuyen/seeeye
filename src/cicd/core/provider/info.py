@@ -1,13 +1,13 @@
 import importlib
 import os
 import pkgutil
-from typing import Optional
+import typing as t
 
 
 class ProviderInfo:
     '''A data class that holds info of the CI provider such as Github Actions, Gitlab, or CircleCI.'''
 
-    shared: Optional['ProviderInfo'] = None
+    shared: t.Optional['ProviderInfo'] = None
 
     def __init__(self, name: str, module: str) -> None:
         self.name = name

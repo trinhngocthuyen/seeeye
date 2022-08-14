@@ -1,9 +1,9 @@
-from typing import Optional, Union
+import typing as t
 
 from cicd.core.client import Client
 from cicd.core.mixin.provider import ProviderMixin
 
-ID = Union[int, str]
+ID = t.Union[int, str]
 
 
 class ProviderClient(Client, ProviderMixin):
@@ -21,7 +21,7 @@ class ProviderClient(Client, ProviderMixin):
         raise NotImplementedError
 
     def get_pull_requests(
-        self, project_identifier: ID, state: Optional[str] = None, **kwargs
+        self, project_identifier: ID, state: t.Optional[str] = None, **kwargs
     ):
         '''Get the pull/merge requests of the given project.
 

@@ -1,4 +1,4 @@
-from typing import Optional
+import typing as t
 
 from cicd.core.provider.client import ID, ProviderClient
 
@@ -13,7 +13,7 @@ class GithubClient(ProviderClient):
         return self.request(endpoint=f'/repos/{identifier}', **kwargs)
 
     def get_pull_requests(
-        self, project_identifier: ID, state: Optional[str] = None, **kwargs
+        self, project_identifier: ID, state: t.Optional[str] = None, **kwargs
     ):
         params = kwargs.pop('params', {})
         if state is not None:

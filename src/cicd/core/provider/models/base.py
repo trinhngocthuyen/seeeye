@@ -1,12 +1,12 @@
+import typing as t
 from functools import cached_property, wraps
-from typing import Any, Callable, List, Literal, Type, TypeVar, overload
 
 from typing_extensions import ParamSpec
 
 from cicd.core.mixin.provider import ProviderMixin
 from cicd.core.provider.client import ProviderClient
 
-D = TypeVar('D')
+D = t.TypeVar('D')
 P = ParamSpec('P')
 
 
@@ -40,22 +40,22 @@ class ProviderModel(dict, ProviderMixin):
         return {}
 
 
-@overload
+@t.overload
 def model(
-    dtype: Type[D], to_list: Literal[True]
-) -> Callable[[Callable[P, Any]], Callable[P, List[D]]]:
+    dtype: t.Type[D], to_list: t.Literal[True]
+) -> t.Callable[[t.Callable[P, t.Any]], t.Callable[P, t.List[D]]]:
     ...
 
 
-@overload
+@t.overload
 def model(
-    dtype: Type[D], to_list: Literal[False] = False
-) -> Callable[[Callable[P, Any]], Callable[P, D]]:
+    dtype: t.Type[D], to_list: t.Literal[False] = False
+) -> t.Callable[[t.Callable[P, t.Any]], t.Callable[P, D]]:
     ...
 
 
 def model(
-    dtype: Type[D],
+    dtype: t.Type[D],
     to_list: bool = False,
 ):
     '''A decorator to convert json data to model/list of models.

@@ -1,17 +1,17 @@
 import re
+import typing as t
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Type, TypeVar, Union
 
-T = TypeVar('T', bound='DataRepresentedObject')
+T = t.TypeVar('T', bound='DataRepresentedObject')
 
 
 class DataRepresentedObject:
     def __init__(
         self,
-        data: Union[Dict[str, Any], List[Dict[str, Any]], None] = None,
-        path: Union[str, Path, None] = None,
+        data: t.Union[t.Dict[str, t.Any], t.List[t.Dict[str, t.Any]], None] = None,
+        path: t.Union[str, Path, None] = None,
     ) -> None:
-        self.data: Union[Dict[str, Any], List[Dict[str, Any]]] = data
+        self.data: t.Union[t.Dict[str, t.Any], t.List[t.Dict[str, t.Any]]] = data
         self.path = path
         if data is None and path:
             try:
@@ -26,21 +26,21 @@ class DataRepresentedObject:
     def _write_data(self, data, f):
         raise NotImplementedError
 
-    def save(self, path: Union[str, Path, None] = None, **kwargs):
+    def save(self, path: t.Union[str, Path, None] = None, **kwargs):
         p = Path(path or self.path)
         p.parent.mkdir(parents=True, exist_ok=True)
         with open(p, 'w') as f:
             self._write_data(self.data, f, **kwargs)
 
-    def as_type(self, t: Type[T]) -> T:
+    def as_type(self, t: t.Type[T]) -> T:
         return t(data=self.data, path=self.path)
 
     def query(
         self,
         key: str,
-        as_type: Optional[Type[T]] = None,
-    ) -> Union[T, Dict[str, Any], List[Dict[str, Any]], None]:
-        def str_or_int(s: str) -> Union[str, int]:
+        as_type: t.Optional[t.Type[T]] = None,
+    ) -> t.Union[T, t.Dict[str, t.Any], t.List[t.Dict[str, t.Any]], None]:
+        def str_or_int(s: str) -> t.Union[str, int]:
             try:
                 return int(s)
             except ValueError:

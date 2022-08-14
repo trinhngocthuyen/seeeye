@@ -1,4 +1,4 @@
-from typing import List
+import typing as t
 
 from cicd.core.mixin.core import CoreMixin
 from cicd.ios.actions.test_extraction import TestExtractionAction
@@ -7,10 +7,10 @@ from cicd.ios.actions.test_extraction import TestExtractionAction
 class TestShardingMixin(CoreMixin):
     __test__ = False
 
-    def extract_tests(self, **kwargs) -> List[str]:
+    def extract_tests(self, **kwargs) -> t.List[str]:
         return TestExtractionAction(**kwargs).run()
 
-    def test_sharding(self, **kwargs) -> List[List[str]]:
+    def test_sharding(self, **kwargs) -> t.List[t.List[str]]:
         n_shards = kwargs.get('shards', 0)
         if not n_shards:
             return []

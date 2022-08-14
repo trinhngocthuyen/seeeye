@@ -1,4 +1,4 @@
-from typing import Optional, Type
+import typing as t
 
 from retry import retry
 
@@ -16,7 +16,7 @@ class Runner:
     :param timeout: The timeout in seconds of the runner execution.
     :param retries: The number of action retries.
     :param retry_kwargs_fn: The function to update the ``kwargs`` in the retry.
-    :type retry_kwargs_fn: Callable[[Dict[str, Any], RetryContext], Dict[str, Any]]
+    :type retry_kwargs_fn: t.Callable[[t.Dict[str, t.Any], RetryContext], t.Dict[str, t.Any]]
     '''
 
     class RetryContext(dict):
@@ -27,7 +27,7 @@ class Runner:
             return self.get('idx', 0)
 
         @property
-        def error(self) -> Optional[Exception]:
+        def error(self) -> t.Optional[Exception]:
             return self.get('error')
 
     def run(self, **kwargs):
@@ -63,5 +63,5 @@ class Runner:
         return run_with_timeout()
 
     @property
-    def action_cls(self) -> Type[Action]:
+    def action_cls(self) -> t.Type[Action]:
         raise NotImplementedError

@@ -1,7 +1,7 @@
 import re
+import typing as t
 from pathlib import Path
 from shlex import quote
-from typing import List
 
 from cicd.core.utils.sh import sh
 from cicd.ios.actions.base import IOSAction
@@ -15,14 +15,14 @@ class TestExtractionAction(IOSAction):
 
     __test__ = False
 
-    def run(self) -> List[str]:
+    def run(self) -> t.List[str]:
         bin_paths = [
             p / p.with_suffix('').name
             for p in self.derived_data_path.glob('**/*.xctest')
         ]
         return [x for path in bin_paths for x in self._extract(bin_path=path)]
 
-    def _extract(self, bin_path: Path) -> List[str]:
+    def _extract(self, bin_path: Path) -> t.List[str]:
         result = []
         cmd = f'xcrun nm {quote(str(bin_path))} | xcrun swift-demangle | grep test'
         output = sh.exec(cmd)
