@@ -25,11 +25,24 @@ dependencies = [
     "click",
     "GitPython",
     "requests",
+    "pydantic",
 ]
 requires-python = ">=3.8"
 
 [project.optional-dependencies]
-dev = ["black", "autoflake", "bumpver", "isort", "pip-tools", "pytest", "twine", "setuptools>=61.0.0", "sphinx_rtd_theme", "pre-commit", "pytest-cov"]
+dev = [
+    "setuptools>=61.0.0",
+    "pip-tools",
+    "black",
+    "autoflake",
+    "isort",
+    "pre-commit",
+    "bumpver",
+    "twine",
+    "pytest",
+    "pytest-cov",
+    "sphinx_rtd_theme",
+]
 
 [project.urls]
 Homepage = "https://github.com/trinhngocthuyen/seeeye"
