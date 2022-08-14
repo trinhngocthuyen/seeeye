@@ -1,6 +1,6 @@
 import click
 
-from cicd.ios._cli.opts import Opts
+from cicd.core._cli.opts import Opts
 from cicd.ios.mixin.mono import MonoMixin as Mixin
 
 opts = Opts(
