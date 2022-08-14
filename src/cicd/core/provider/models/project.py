@@ -6,10 +6,11 @@ from .pr import PullRequest
 
 class Project(ProviderModel):
     __desc__ = ['id', 'name']
-    id: int
-    name: str
-    description: str
-    full_name: str
+
+    id: t.Optional[int]
+    name: t.Optional[str]
+    description: t.Optional[str]
+    full_name: t.Optional[str]
 
     @property
     def url(self) -> str:

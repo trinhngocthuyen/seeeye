@@ -1,6 +1,7 @@
 import typing as t
 from functools import cached_property, wraps
 
+from pydantic import BaseModel
 from typing_extensions import ParamSpec
 
 from cicd.core.mixin.provider import ProviderMixin
@@ -10,17 +11,13 @@ D = t.TypeVar('D')
 P = ParamSpec('P')
 
 
-class ProviderModel(dict, ProviderMixin):
+class ProviderModel(BaseModel, ProviderMixin):
     __desc__ = []
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        ds = args[0] if args else kwargs
-        for k in getattr(self, '__annotations__', {}):
-            if k.startswith('__') and k.endswith('__'):
-                continue
-            field = self.schema.get(k, k)
-            setattr(self, k, ds.get(field))
+    class Config:
+        # Workaround for cached_property
+        # Ref: https://github.com/pydantic/pydantic/issues/2763#issuecomment-835725898
+        keep_untouched = (cached_property,)
 
     def __str__(self) -> str:
         return '{} {}'.format(
@@ -77,8 +74,8 @@ def model(
         def wrapper(*args, **kwargs):
             raw = func(*args, **kwargs)
             if to_list:
-                return [dtype(x) for x in raw]
-            return dtype(raw)
+                return [dtype(**x) for x in raw]
+            return dtype(**raw)
 
         return wrapper
 
