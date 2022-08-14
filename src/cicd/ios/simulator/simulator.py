@@ -46,7 +46,7 @@ class DeviceType(dict):
 
 class Simulator(dict, SimCtlMixin):
     _runtimes: t.List[Runtime]
-    _device_types: t.List[Devicet.Type]
+    _device_types: t.List[DeviceType]
     _devices: t.List['Simulator']
 
     def __init__(self, **kwargs):
@@ -59,8 +59,8 @@ class Simulator(dict, SimCtlMixin):
             kwargs['name'] = 'iPhone 8'
         if device_type_name:
             kwargs[
-                'devicet.TypeIdentifier'
-            ] = 'com.apple.CoreSimulator.SimDevicet.Type.{}'.format(
+                'deviceTypeIdentifier'
+            ] = 'com.apple.CoreSimulator.SimDeviceType.{}'.format(
                 dashify(device_type_name)
             )
         if runtime_name:
@@ -110,8 +110,8 @@ class Simulator(dict, SimCtlMixin):
         return next(x for x in self._runtimes if predicate(x))
 
     @cached_property
-    def device_type(self) -> Devicet.Type:
-        device_type_id = self.get('devicet.TypeIdentifier')
+    def device_type(self) -> DeviceType:
+        device_type_id = self.get('deviceTypeIdentifier')
         if device_type_id:
             predicate = lambda x: x.identifier == device_type_id
         else:
@@ -122,7 +122,7 @@ class Simulator(dict, SimCtlMixin):
     def load():
         data = JSON.from_str(sh.exec('xcrun simctl list --json'))
         Simulator._runtimes = [Runtime(x) for x in data['runtimes']]
-        Simulator._device_types = [Devicet.Type(x) for x in data['devicetypes']]
+        Simulator._device_types = [DeviceType(x) for x in data['devicetypes']]
         Simulator._devices = [
             Simulator(runtime_id=runtime_id, **device_data)
             for (runtime_id, devices_data) in data['devices'].items()
