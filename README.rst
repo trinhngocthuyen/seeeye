@@ -39,12 +39,12 @@ Documentation
 
 Kindly check out the related docs on readthedocs_.
 
-Supported CI/CD Providers
--------------------------
+.. Supported CI/CD Providers
+.. -------------------------
 
-- [x] Github Actions
-- [ ] CircleCI (planning)
-- [ ] Gitlab CI/CD (planning)
+.. - [x] Github Actions
+.. - [ ] CircleCI (planning)
+.. - [ ] Gitlab CI/CD (planning)
 
 Contributing
 ------------
