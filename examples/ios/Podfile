@@ -1,4 +1,4 @@
-require_relative ".cocoapods/hooks"
+plugin "cocoapods-xcconfig-hooks"
 
 platform :ios, "14.0"
 use_frameworks!
@@ -12,11 +12,4 @@ target "EX" do
   target "EXUITests" do
     # Pods for testing
   end
-end
-
-post_install do |installer|
-  hooks = [
-    Pod::XCConfigsHook.new(installer: installer),
-  ]
-  hooks.each(&:run)
 end

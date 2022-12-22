@@ -3,6 +3,7 @@
 source "https://rubygems.org"
 
 gem "cocoapods", "1.10.0"
+gem "cocoapods-xcconfig-hooks", "0.0.1"
 gem "xcpretty", "0.3.0"
 
 group :development do
