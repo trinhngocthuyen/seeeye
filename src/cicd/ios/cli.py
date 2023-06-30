@@ -18,7 +18,7 @@ opts = Opts(
     destination=click.option(
         '--destination',
         type=str,
-        help='Destination (ex. "platform=iOS Simulator,name=iPhone 8"',
+        help='Destination (ex. "platform=iOS Simulator,name=Seeeye"',
     ),
     clean=click.option('--clean', is_flag=True, help='Perform a clean build'),
     log_formatter=click.option(

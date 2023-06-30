@@ -1,12 +1,18 @@
+from functools import cached_property
+
 from cicd.core.utils.sh import sh
 
 from .metadata import MetadataMixin
 
 
 class CocoaPodsMixin(MetadataMixin):
+    @cached_property
+    def pod_bin(self):
+        return self.metadata.resolve_program('pod')
+
     def pod(self, cmd: str):
         sh.exec(
-            '{} {}'.format(self.metadata.resolve_program('pod'), cmd),
+            f'{self.pod_bin} {cmd}',
             capture_output=False,
             log_cmd=True,
         )

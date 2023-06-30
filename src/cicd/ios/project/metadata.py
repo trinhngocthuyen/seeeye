@@ -41,12 +41,16 @@ class Metadata:
     def scheme(self) -> t.Optional[str]:
         return self.schemes[0] if self.schemes else None
 
-    @property
-    def bundle_enabled(self) -> bool:
-        return (self.workdir / 'Gemfile').exists()
+    def bundle_enabled(self, name) -> bool:
+        if (self.workdir / 'Gemfile').exists():
+            try:
+                sh.exec(f'bundle info {name}', capture_output=True)
+                return True
+            except:
+                return False
 
     def resolve_program(self, name) -> t.Optional[str]:
-        if self.bundle_enabled:
+        if self.bundle_enabled(name):
             return f'bundle exec {name}'
         if shutil.which(name):
             return name

@@ -56,7 +56,7 @@ class Simulator(dict, SimCtlMixin):
         device_type_name = kwargs.pop('type', None)
         runtime_name = kwargs.pop('runtime', None)
         if 'name' not in kwargs:
-            kwargs['name'] = 'iPhone 8'
+            kwargs['name'] = 'Seeeye'
         if device_type_name:
             kwargs[
                 'deviceTypeIdentifier'
@@ -115,7 +115,7 @@ class Simulator(dict, SimCtlMixin):
         if device_type_id:
             predicate = lambda x: x.identifier == device_type_id
         else:
-            predicate = lambda x: x.name.startswith('iPhone 8')
+            predicate = lambda x: x.name.startswith('iPhone 14')
         return next(x for x in self._device_types if predicate(x))
 
     @staticmethod
