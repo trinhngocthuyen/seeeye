@@ -43,7 +43,11 @@ class XCBCmdMaker(CmdMaker):
         elif self.metadata.xcodeproj_path:
             project = self.metadata.xcodeproj_path
 
-        default_destination = 'platform=iOS Simulator,name=Seeeye'
+        simulator = self.kwargs.pop('_simulator')
+        if simulator:
+            default_destination = f'id={simulator.identifier}'
+        else:
+            default_destination = 'platform=iOS Simulator,name=Seeeye'
         xcb_kwargs = {
             'derivedDataPath': self.kwargs.get('derived_data_path'),
             'xctestrun': xctestrun,

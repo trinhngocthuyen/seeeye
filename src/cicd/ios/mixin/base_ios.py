@@ -9,9 +9,15 @@ class BaseIOSMixin(
     SimulatorMixin,
     CocoaPodsMixin,
 ):
-    def pre_run(self, **kwargs):
-        self.prepare_cocoapods(**kwargs)
-        self.prepare_simulator(**kwargs)
+    def __init__(self, **kwargs) -> None:
+        self.kwargs = kwargs
+        super().__init__()
 
-    def post_run(self, **kwargs):
+    def pre_run(self):
+        self.prepare_cocoapods(**self.kwargs)
+        self.prepare_simulator(**self.kwargs)
+        # Workaround: For children to use simulator info
+        self.kwargs['_simulator'] = self.simulator
+
+    def post_run(self):
         pass

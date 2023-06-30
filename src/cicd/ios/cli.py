@@ -71,7 +71,7 @@ def cli():
 @click.option('--cocoapods', is_flag=True, help='Run pod install beforehand')
 @xcodebuild_opts
 def build(**kwargs):
-    Mixin().start_building(**kwargs)
+    Mixin(**kwargs).start_building()
 
 
 @cli.command()
@@ -81,7 +81,7 @@ def build(**kwargs):
 @click.option('--cocoapods', is_flag=True, help='Run pod install beforehand')
 @xcodebuild_opts
 def test(**kwargs):
-    Mixin().start_testing(**kwargs)
+    Mixin(**kwargs).start_testing()
 
 
 @cli.command()
@@ -89,7 +89,7 @@ def test(**kwargs):
 @click.option('--export', help='Path to export cov json data')
 @opts.use('timeout', 'derived_data_path')
 def cov(**kwargs):
-    Mixin().start_parsing_cov(**kwargs)
+    Mixin(**kwargs).start_parsing_cov()
 
 
 if __name__ == '__main__':

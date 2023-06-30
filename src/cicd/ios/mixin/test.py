@@ -5,16 +5,17 @@ from .test_sharding import TestShardingMixin
 
 
 class TestMixin(BaseIOSMixin, TestShardingMixin):
-    def start_testing(self, **kwargs):
+    def start_testing(self):
         with self.step('pre-run'):
-            self.pre_run(**kwargs)
+            self.pre_run()
 
         with self.step('run'):
             runner = XCBTestRunner()
+            kwargs = self.kwargs.copy()
             shard = self.get_test_shard(**kwargs)
             if shard:
                 kwargs['only_testing'] = shard
             runner.run(**kwargs)
 
         with self.step('post-run'):
-            self.post_run(**kwargs)
+            self.post_run()

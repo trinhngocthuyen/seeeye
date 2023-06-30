@@ -1,13 +1,16 @@
+import typing as t
+
 from cicd.ios.simulator import Simulator
 
 
 class SimulatorMixin:
+    simulator: t.Optional[Simulator]
     def prepare_simulator(self, **kwargs):
         destination = kwargs.get('destination')
         if destination:
-            simulator = Simulator.from_xcodebuild_destination(destination)
+            self.simulator = Simulator.from_xcodebuild_destination(destination)
         else:
-            simulator = Simulator(**kwargs)
-        if simulator:
-            with simulator:
+            self.simulator = Simulator(**kwargs)
+        if self.simulator:
+            with self.simulator:
                 pass
