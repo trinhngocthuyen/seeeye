@@ -9,6 +9,9 @@ on:
       deploy-stable:
         description: Deploy a stable version
         type: boolean
+      bump-version:
+        description: Bump version
+        type: boolean
 
 jobs:
   deploy-rc:
@@ -41,6 +44,23 @@ jobs:
         with:
           version-file: VERSION
           generate-release-notes: true
+      - name: Bump version
+        uses: trinhngocthuyen/gh-actions/core/bump_version@main
+        with:
+          version-file: VERSION
+      - name: Push changes
+        uses: trinhngocthuyen/gh-actions/git/push@main
+        with:
+          commit_msg: "CHORE: Bump version"
+          token: ${{ secrets.GH_TOKEN }}
+
+  bump-version:
+    if: ${{ inputs.bump-version }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Install
+        uses: trinhngocthuyen/gh-actions/py/install@main
       - name: Bump version
         uses: trinhngocthuyen/gh-actions/core/bump_version@main
         with:
