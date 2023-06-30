@@ -1,4 +1,4 @@
-name: eng_workflow
+name: eng-workflow
 
 on:
   workflow_dispatch:
