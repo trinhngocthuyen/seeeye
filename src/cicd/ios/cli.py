@@ -85,6 +85,13 @@ def test(**kwargs):
 
 
 @cli.command()
+@click.option('--cocoapods', is_flag=True, help='Run pod install beforehand')
+@xcodebuild_opts
+def archive(**kwargs):
+    Mixin(**kwargs).start_archiving()
+
+
+@cli.command()
 @click.option('--config', help='Path to config file (default: .cov.yml)')
 @click.option('--export', help='Path to export cov json data')
 @opts.use('timeout', 'derived_data_path')
