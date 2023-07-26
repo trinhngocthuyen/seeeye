@@ -58,6 +58,7 @@ class XCBCmdMaker(CmdMaker):
             'configuration': self.kwargs.get('configuration'),
             'sdk': self.kwargs.get('sdk'),
             'destination': self.kwargs.get('destination') or default_destination,
+            'archivePath': self.kwargs.get('archive_path'),
         }
         xcargs = self.kwargs.get('xcargs', {})
         actions = self.kwargs.get('actions', [])

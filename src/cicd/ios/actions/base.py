@@ -9,32 +9,71 @@ from cicd.ios.syntax.xcresult import XCResult
 
 
 class IOSAction(Action, MetadataMixin):
-    xcresult: XCResult
+    xcresult: t.Optional[XCResult]
+    xcarchive_path: t.Optional[Path]
 
     @cached_property
     def derived_data_path(self) -> Path:
         path = self.kwargs.get('derived_data_path')
         return Path(path) if path else self.metadata.default_derived_data_path
 
-    def xcresult_paths(self) -> t.List[Path]:
-        return sorted(self.derived_data_path.glob('Logs/Test/*.xcresult'), reverse=True)
+    @cached_property
+    def archive_path(self) -> Path:
+        path = self.kwargs.get('archive_path') or '~/Library/Developer/Xcode/Archives'
+        return Path(path).expanduser()
+
+    @contextmanager
+    def collect_artifacts(
+        self,
+        name: str,
+        base_path: Path,
+        pattern: str,
+        on_detected: t.Callable[[t.List[Path]], None],
+        new_only=True,
+    ) -> t.List[Path]:
+        def find_paths() -> t.List[Path]:
+            return sorted(base_path.glob(pattern), reverse=True)
+
+        before = find_paths() if new_only else []
+        try:
+            yield
+        finally:
+            after = find_paths()
+            paths = list(set(after).difference(before))
+            if len(paths) == 0:
+                raise RuntimeError(
+                    f'Cannot detect any {name}. Archive path: {self.archive_path}'
+                )
+            elif len(paths) > 1:
+                self.logger.warning(f'Detected more than one {name}: {paths}')
+            else:
+                self.logger.info(f'Detected {name}: {paths}')
+            on_detected(paths)
 
     @contextmanager
     def collect_xcresults(self, new_only=True) -> XCResult:
         '''Collect the xcresults generated after an action.'''
-        before = self.xcresult_paths() if new_only else []
-        try:
+
+        def save(paths):
+            self.xcresult = XCResult(paths[0])
+
+        with self.collect_artifacts(
+            name='xcresult',
+            base_path=self.derived_data_path,
+            pattern='Logs/Test/*.xcresult',
+            on_detected=save,
+        ):
             yield
-        finally:
-            after = self.xcresult_paths()
-            paths = list(set(after).difference(before))
-            if len(paths) == 0:
-                raise RuntimeError(
-                    f'Cannot detect any xcresult bundle. DerivedData: {self.derived_data_path}'
-                )
-            elif len(paths) > 1:
-                self.logger.warning(f'Detected more than one xcresult bundle: {paths}')
-                # TODO: Merge xcresult bundles
-            else:
-                self.logger.info(f'Detected xcresult bundles: {paths}')
-            self.xcresult = XCResult(path=paths[0])
+
+    @contextmanager
+    def collect_xcarchives(self, new_only=True) -> t.List[Path]:
+        def save(paths):
+            self.xcarchive_path = paths[0]
+
+        with self.collect_artifacts(
+            name='xcarchive',
+            base_path=self.archive_path,
+            pattern='**/*.xcarchive',
+            on_detected=save,
+        ):
+            yield
