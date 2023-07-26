@@ -6,9 +6,7 @@ class BuildError(Exception):
 
 
 class XCBBuildAction(XCBAction):
-    '''A class that iteracts with the xcodebuild command,
-    particularly for build actions.
-    '''
+    '''A class that interacts with the xcodebuild command, particularly for build actions.'''
 
     def run(self):
         kwargs = self.kwargs

@@ -5,6 +5,7 @@ from cicd.ios.simulator import Simulator
 
 class SimulatorMixin:
     simulator: t.Optional[Simulator]
+
     def prepare_simulator(self, **kwargs):
         destination = kwargs.get('destination')
         if destination:

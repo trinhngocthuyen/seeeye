@@ -12,9 +12,7 @@ class TestError(Exception):
 
 
 class XCBTestAction(XCBAction):
-    '''A class that iteracts with the xcodebuild command,
-    particularly for test actions.
-    '''
+    '''A class that interacts with the xcodebuild command, particularly for test actions.'''
 
     def run(self) -> XCResult:
         '''Execute the action
