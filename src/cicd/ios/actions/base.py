@@ -41,7 +41,9 @@ class IOSAction(Action, MetadataMixin):
             after = find_paths()
             paths = list(set(after).difference(before))
             if len(paths) == 0:
-                raise RuntimeError(f'Cannot detect any {name} matching: {base_path / pattern}')
+                raise RuntimeError(
+                    f'Cannot detect any {name} matching: {base_path / pattern}'
+                )
             elif len(paths) > 1:
                 self.logger.warning(f'Detected more than one {name}: {paths}')
             else:
