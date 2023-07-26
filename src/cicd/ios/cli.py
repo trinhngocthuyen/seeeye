@@ -85,6 +85,7 @@ def test(**kwargs):
 
 
 @cli.command()
+@click.option('--archive-path', help='Archive path')
 @click.option('--cocoapods', is_flag=True, help='Run pod install beforehand')
 @xcodebuild_opts
 def archive(**kwargs):
