@@ -41,9 +41,7 @@ class IOSAction(Action, MetadataMixin):
             after = find_paths()
             paths = list(set(after).difference(before))
             if len(paths) == 0:
-                raise RuntimeError(
-                    f'Cannot detect any {name}. Archive path: {self.archive_path}'
-                )
+                raise RuntimeError(f'Cannot detect any {name} matching: {base_path / pattern}')
             elif len(paths) > 1:
                 self.logger.warning(f'Detected more than one {name}: {paths}')
             else:
@@ -62,6 +60,7 @@ class IOSAction(Action, MetadataMixin):
             base_path=self.derived_data_path,
             pattern='Logs/Test/*.xcresult',
             on_detected=save,
+            new_only=new_only,
         ):
             yield
 
