@@ -1,5 +1,4 @@
 import typing as t
-from shlex import quote
 
 from cicd.core.utils.sh import sh
 from cicd.ios.actions.base import IOSAction
@@ -15,8 +14,10 @@ class CmdMaker(MetadataMixin):
     def make(self) -> t.Optional[str]:
         raise NotImplementedError
 
-    def quote(self, s) -> t.Optional[str]:
-        return quote(str(s)) if s is not None else None
+    def args_from_dict(self, ds: t.Dict[str, t.Any]) -> t.List[str]:
+        return [
+            x for (k, v) in ds.items() for x in [f'-{k}', sh.quote(v)] if v is not None
+        ]
 
 
 class XCBCmdMaker(CmdMaker):
@@ -66,20 +67,14 @@ class XCBCmdMaker(CmdMaker):
         if self.kwargs.get('clean'):
             actions.insert(0, 'clean')
 
-        cmps = ['xcodebuild'] + actions
-        cmps += [
-            x
-            for (k, v) in xcb_kwargs.items()
-            for x in [f'-{k}', self.quote(v)]
-            if v is not None
-        ]
+        cmps = ['xcodebuild'] + actions + self.args_from_dict(xcb_kwargs)
         cmps += [x for test in tests for x in ['-only-testing', test]]
         if isinstance(xcargs, str):
             cmps += [xcargs]
         elif isinstance(xcargs, (tuple, list)):
             cmps += list(xcargs)
         elif isinstance(xcargs, dict):
-            cmps += [f'{k}={quote(v)}' for (k, v) in xcargs.items()]
+            cmps += [f'{k}={sh.quote(v)}' for (k, v) in xcargs.items()]
         return ' '.join(cmps)
 
 
@@ -94,7 +89,7 @@ class TeeCmdMaker(CmdMaker):
     def make(self) -> t.Optional[str]:
         log_path = self.kwargs.get('log_path')
         if log_path:
-            return f'tee {quote(log_path)}'
+            return f'tee {sh.quote(log_path)}'
 
 
 class XCBAction(IOSAction, MetadataMixin):
