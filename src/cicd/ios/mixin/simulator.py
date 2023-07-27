@@ -4,7 +4,7 @@ from cicd.ios.simulator import Simulator
 
 
 class SimulatorMixin:
-    simulator: t.Optional[Simulator]
+    simulator: t.Optional[Simulator] = None
 
     def prepare_simulator(self, **kwargs):
         destination = kwargs.get('destination')

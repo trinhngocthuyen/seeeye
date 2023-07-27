@@ -27,6 +27,10 @@ class XCBCmdMaker(CmdMaker):
         scheme = self.kwargs.get('scheme')
         project = self.kwargs.get('project')
         target = self.kwargs.get('target')
+        xcargs = self.kwargs.get('xcargs', {})
+        actions = self.kwargs.get('actions', [])
+        tests = self.kwargs.get('only_testing', [])
+
         if xctestrun:
             workspace, scheme = None, None
             project, target = None, None
@@ -44,9 +48,11 @@ class XCBCmdMaker(CmdMaker):
         elif self.metadata.xcodeproj_path:
             project = self.metadata.xcodeproj_path
 
-        simulator = self.kwargs.pop('_simulator')
+        simulator = self.kwargs.pop('_simulator', None)
         if simulator:
             default_destination = f'id={simulator.identifier}'
+        elif 'archive' in actions:
+            default_destination = 'generic/platform=iOS'
         else:
             default_destination = 'platform=iOS Simulator,name=Seeeye'
         xcb_kwargs = {
@@ -61,9 +67,6 @@ class XCBCmdMaker(CmdMaker):
             'destination': self.kwargs.get('destination') or default_destination,
             'archivePath': self.kwargs.get('archive_path'),
         }
-        xcargs = self.kwargs.get('xcargs', {})
-        actions = self.kwargs.get('actions', [])
-        tests = self.kwargs.get('only_testing', [])
         if self.kwargs.get('clean'):
             actions.insert(0, 'clean')
 
