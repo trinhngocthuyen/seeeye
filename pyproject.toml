@@ -29,6 +29,9 @@ dependencies = [
 ]
 requires-python = ">=3.8"
 
+[project.scripts]
+cicd = 'cicd.cli:main'
+
 [project.optional-dependencies]
 dev = [
     "setuptools>=61.0.0",
