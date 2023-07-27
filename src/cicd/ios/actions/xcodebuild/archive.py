@@ -64,6 +64,12 @@ class XCBArchiveAction(XCBAction):
 
         plist_path = in_dir / 'export_options.plist'
         plist_path.write_bytes(plistlib.dumps(self.export_options()))
+        self.logger.debug(
+            'Generate export options plist:'
+            '\n-------------------------\n'
+            f'{plist_path.read_text()}'
+            '\n-------------------------\n'
+        )
         cmd = XCBExportCmdMaker(
             archive_path=self.xcarchive_path,
             export_options_plist=plist_path,

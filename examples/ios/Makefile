@@ -9,3 +9,6 @@ build:
 
 test:
 	sh scripts/test.sh
+
+format:
+	cd ../.. && make format
