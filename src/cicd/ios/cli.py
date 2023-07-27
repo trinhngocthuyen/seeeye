@@ -85,6 +85,12 @@ def test(**kwargs):
 
 
 @cli.command()
+@click.option(
+    '--profiles',
+    help='Profiles mapping used for exporting to .ipa (format: <bundle_id>:<profile_name>)',
+)
+@click.option('--export-method', help='Export method (Ex: app-store, ad-hoc...)')
+@click.option('--export-path', help='Where the ipa should be in')
 @click.option('--archive-path', help='Archive path')
 @click.option('--cocoapods', is_flag=True, help='Run pod install beforehand')
 @xcodebuild_opts

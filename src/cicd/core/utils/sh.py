@@ -1,6 +1,8 @@
 import os
+import shlex
 import signal
 import subprocess
+import typing as t
 
 from cicd.core.logger import logger
 
@@ -42,6 +44,9 @@ class Shell:
             # --> Kill the process group to clean up them all.
             os.killpg(os.getpgid(proc.pid), signal.SIGTERM)
             raise e
+
+    def quote(self, s) -> t.Optional[str]:
+        return shlex.quote(str(s)) if s is not None else None
 
 
 sh = Shell()
