@@ -48,5 +48,5 @@ jobs:
       - name: Push changes
         uses: trinhngocthuyen/gh-actions/git/push@main
         with:
-          commit_msg: "CHORE: Bump version"
+          commit_msg: "[skip ci] CHORE: Bump version"
           token: ${{ secrets.GH_TOKEN }}
