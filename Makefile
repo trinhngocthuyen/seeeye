@@ -28,3 +28,6 @@ doc:
 			../src/cicd && \
 		rm -rf api/modules.rst && \
 		make clean html
+
+doc.up: doc
+	python3 -m http.server --directory docs/_build/html

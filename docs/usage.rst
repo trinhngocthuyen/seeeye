@@ -10,24 +10,30 @@ To build the project
 
 .. code-block:: console
 
-    $ python3 -m cicd.ios.cli build
+    $ cicd ios build
 
 To test the project
 
 .. code-block:: console
 
-    $ python3 -m cicd.ios.cli test
+    $ cicd ios test
 
 To build the project for testing, then test without building
 
 .. code-block:: console
 
-    $ python3 -m cicd.ios.cli build --build-for-testing
-    $ python3 -m cicd.ios.cli test --test-without-building
+    $ cicd ios build --build-for-testing
+    $ cicd ios test --test-without-building
+
+To archive the project
+
+.. code-block:: console
+
+    $ cicd ios archive --profiles <app_bundle_id>:<provisioning_profile_name>
 
 .. note::
 
-    To see the usage of the CLI, run with the argument ``--help``. Example: ``python3 -m cicd.ios.cli --help``
+    To see the usage of the CLI, run with the argument ``--help``. Example: ``cicd --help``
 
 Customization
 -------------

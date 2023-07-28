@@ -2,7 +2,7 @@ seeeye (CI/CD toolkits for mobile apps)
 =======================================
 
 .. _readthedocs: https://seeeye.readthedocs.io/
-.. _contributing guidelines: https://seeeye.readthedocs.io/en/latest/contributing.html
+.. _contributing guidelines: /contributing.html
 .. _fastlane: https://fastlane.tools
 
 .. image:: https://github.com/trinhngocthuyen/seeeye/workflows/test/badge.svg
@@ -32,12 +32,16 @@ Installation
 Usage
 -----
 
-Kindly check out the related docs on readthedocs_.
+Kindly check out the related docs on readthedocs_:
+
+- `Usage <https://seeeye.readthedocs.io/en/latest/usage.html>`_
 
 Documentation
 -------------
 
-Kindly check out the related docs on readthedocs_.
+Kindly check out the related docs on readthedocs_:
+
+- `API Reference <https://seeeye.readthedocs.io/en/latest/api/reference.html>`_
 
 .. Supported CI/CD Providers
 .. -------------------------
