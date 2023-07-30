@@ -19,6 +19,8 @@ seeeye (CI/CD toolkits for mobile apps)
 
 ``seeeye`` is a Python package providing various CI/CD toolkits for mobile projects, especially iOS projects. While many iOS projects favor fastlane_, this package attempts to brings convenient usages to projects where Python is the favorable choice for scripting.
 
+.. image:: _static/cli.gif
+
 Installation
 ------------
 
