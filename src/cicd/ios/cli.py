@@ -1,6 +1,7 @@
 import click
 
 from cicd.core._cli.opts import Opts
+from cicd.ios.codesign.cli import main as codesign
 from cicd.ios.mixin.mono import MonoMixin as Mixin
 
 opts = Opts(
@@ -104,6 +105,9 @@ def archive(**kwargs):
 @opts.use('timeout', 'derived_data_path')
 def cov(**kwargs):
     Mixin(**kwargs).start_parsing_cov()
+
+
+main.add_command(codesign, name='codesign')
 
 
 if __name__ == '__main__':
