@@ -1,11 +1,10 @@
 import os
 import shutil
 import tempfile
-import typing as t
 from contextlib import contextmanager
 from pathlib import Path
 
-StrPath = t.Union[str, Path]
+from cicd.core.typing import StrPath
 
 
 class FileUtils:
