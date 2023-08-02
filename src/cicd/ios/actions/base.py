@@ -41,7 +41,7 @@ class IOSAction(Action, MetadataMixin):
             after = find_paths()
             paths = list(set(after).difference(before))
             if len(paths) == 0:
-                raise RuntimeError(
+                self.logger.warning(
                     f'Cannot detect any {name} matching: {base_path / pattern}'
                 )
             elif len(paths) > 1:
@@ -55,7 +55,7 @@ class IOSAction(Action, MetadataMixin):
         '''Collect the xcresults generated after an action.'''
 
         def save(paths):
-            self.xcresult = XCResult(paths[0])
+            self.xcresult = XCResult(paths[0]) if paths else None
 
         with self.collect_artifacts(
             name='xcresult',
@@ -67,9 +67,9 @@ class IOSAction(Action, MetadataMixin):
             yield
 
     @contextmanager
-    def collect_xcarchives(self, new_only=True) -> t.List[Path]:
+    def collect_xcarchives(self) -> t.List[Path]:
         def save(paths):
-            self.xcarchive_path = paths[0]
+            self.xcarchive_path = paths[0] if paths else None
 
         with self.collect_artifacts(
             name='xcarchive',
