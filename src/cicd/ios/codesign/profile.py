@@ -13,5 +13,6 @@ class ProvisioningProfile:
         ).expanduser()
 
     def install(self):
+        self.profiles_dir.mkdir(parents=True, exist_ok=True)
         logger.debug(f'Install profile: {self.path}')
         FileUtils.copy(self.path, self.profiles_dir)
