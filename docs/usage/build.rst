@@ -1,5 +1,5 @@
 Building the Project
-=====
+====================
 
 To build the project using the CLI
 
