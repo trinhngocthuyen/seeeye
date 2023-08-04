@@ -36,7 +36,7 @@ Usage
 
 Kindly check out the related docs on readthedocs_:
 
-- `Usage <https://seeeye.readthedocs.io/en/latest/usage.html>`_
+- `Usage <https://seeeye.readthedocs.io/en/latest/usage/index.html>`_
 
 Documentation
 -------------
