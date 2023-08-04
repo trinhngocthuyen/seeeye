@@ -5,7 +5,7 @@
    :hidden:
 
    api/reference
-   usage
+   usage/index
    contributing
 
 Indices and tables
