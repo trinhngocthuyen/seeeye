@@ -1,32 +1,35 @@
-from unittest import mock
-
 import pytest
 
+from cicd.core.cipher.cipher import Cipher
 from cicd.ios.codesign.codesign import CodeSign
 
 
-@pytest.fixture
-def codesign_dir(tmp_path):
-    (tmp_path / 'cert.p12').touch()
-    (tmp_path / 'profile.mobileprovision').touch()
-    return tmp_path
-
-
-@pytest.fixture
-def sut(codesign_dir, bag, monkeypatch):
-    with mock.patch('cicd.core.utils.file.FileUtils.copy', new=bag.fileutils.copy):
-        this = CodeSign(dir=codesign_dir)
-        monkeypatch.setattr(this, 'keychain', bag.keychain)
-        yield this
-
-
-def test_codesign_prepare(sut: CodeSign, bag):
-    sut.prepare()
+def assert_prepared_certs_and_profiles(sut, bag):
     assert len(sut.profiles) == 1
     assert len(sut.certs) == 1
     bag.keychain.prepare.assert_called()
     bag.keychain.import_cert.assert_called()
     bag.fileutils.copy.assert_called()
+
+
+@pytest.mark.parametrize('codesign_enc_dir, codesign_password', [(None, None)])
+def test_codesign_prepare_without_decryption(sut: CodeSign, bag):
+    assert sut.cipher is None
+    sut.prepare()
+    assert_prepared_certs_and_profiles(sut, bag)
+    bag.cipher.perform.assert_not_called()
+
+
+def test_codesign_prepare_with_decryption(
+    sut: CodeSign, bag, codesign_dir, codesign_enc_dir
+):
+    sut.prepare()
+    assert_prepared_certs_and_profiles(sut, bag)
+    bag.cipher.perform.assert_called_with(
+        action=Cipher.Action.DECRYPTION,
+        in_path=codesign_enc_dir,
+        out_path=codesign_dir,
+    )
 
 
 def test_codesign_cleanup(sut: CodeSign, bag):

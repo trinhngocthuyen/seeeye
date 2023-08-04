@@ -12,4 +12,4 @@ class Opts(dict):
         return decorator
 
     def use_all(self):
-        return self.uses(*self.keys())
+        return self.use(*self.keys())
