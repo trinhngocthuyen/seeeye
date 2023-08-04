@@ -28,13 +28,19 @@ class Keychain:
         self.delete()
 
     def create(self):
-        sh.exec(f'security create-keychain -p {sh.quote(self.password)} {self.name}')
+        sh.exec(
+            f'security create-keychain -p {sh.quote(self.password)} {self.name}',
+            masked=self.password,
+        )
 
     def delete(self):
         sh.exec(f'security delete-keychain {self.name}')
 
     def unlock(self):
-        sh.exec(f'security unlock-keychain -p {sh.quote(self.password)} {self.name}')
+        sh.exec(
+            f'security unlock-keychain -p {sh.quote(self.password)} {self.name}',
+            masked=self.password,
+        )
 
     def user_search_list(self) -> t.List[str]:
         output = sh.exec(f'security list-keychain -d user', capture_output=True)
@@ -60,4 +66,4 @@ class Keychain:
         )
         for app in whitelisted_apps or []:
             cmd += f' -T {sh.quote(app)}'
-        sh.exec(cmd)
+        sh.exec(cmd, masked=self.password)
