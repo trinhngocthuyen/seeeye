@@ -17,10 +17,15 @@ class Shell:
     def exec(self, *args, **kwargs):
         timeout = kwargs.pop('timeout', None)
         log_cmd = kwargs.pop('log_cmd', False)
+
         if isinstance(args[0], str):
             kwargs['shell'] = True
+        if masked := kwargs.pop('masked', None):
+            masked_args = tuple(arg.replace(masked, '*****masked*****') for arg in args)
+        else:
+            masked_args = args
         if log_cmd:
-            logger.info(f'$ {args[0]}')
+            logger.info(f'$ {masked_args[0]}')
 
         if kwargs.pop('capture_output', True):
             kwargs['stdout'] = subprocess.PIPE
@@ -33,7 +38,7 @@ class Shell:
                 raise Shell.ExecError(
                     'Command failed with code {}: {}. Error: {}'.format(
                         proc.returncode,
-                        args,
+                        masked_args,
                         err.decode('utf-8').strip() if err else None,
                     )
                 )
