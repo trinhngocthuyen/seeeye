@@ -13,6 +13,11 @@ common_args=(
     --derived-data-path DerivedData
 )
 
+if [[ "${ONLY_TESTING}" == "EXTests" ]]; then
+    # This is unit tests, let's run tests in parallel
+    common_args+=(--parallel-testing-workers 2)
+fi
+
 function _exec_build() {
     python3 -m cicd.ios.cli build \
         ${common_args[@]} \

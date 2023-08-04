@@ -67,6 +67,11 @@ class XCBCmdMaker(CmdMaker):
             'destination': self.kwargs.get('destination') or default_destination,
             'archivePath': self.kwargs.get('archive_path'),
         }
+
+        if (n_workers := self.kwargs.get('parallel_testing_workers') or 0) > 1:
+            xcb_kwargs['parallel-testing-enabled'] = 'YES'
+            xcb_kwargs['parallel-testing-worker-count'] = n_workers
+
         if self.kwargs.get('clean'):
             actions.insert(0, 'clean')
 
