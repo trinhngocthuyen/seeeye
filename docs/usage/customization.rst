@@ -1,5 +1,5 @@
 Customization
-=====
+=============
 
 You can create your own Python scripts and use the code from ``seeeye`` package. Then you can make your recipes. Check out :doc:`/api/reference` for more details.
 

@@ -1,5 +1,5 @@
 Archiving the Project
-=====
+=====================
 
 To archive the project using the CLI
 
