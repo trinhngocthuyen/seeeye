@@ -83,8 +83,10 @@ class XCBCmdMaker(CmdMaker):
 
 class LogCmdMaker(CmdMaker):
     def make(self) -> t.Optional[str]:
-        return self.kwargs.get('log_formatter') or self.metadata.resolve_program(
-            'xcpretty'
+        return (
+            self.kwargs.get('log_formatter')
+            or self.metadata.resolve_program('xcbeautify')
+            or self.metadata.resolve_program('xcpretty')
         )
 
 
