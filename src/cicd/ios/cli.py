@@ -110,6 +110,21 @@ def cov(**kwargs):
     Mixin(**kwargs).start_parsing_cov()
 
 
+@main.command
+@click.option('--version', type=str, help='Bump version to this one')
+@click.option('--version-next', is_flag=True, help='Bump version to the next one')
+@click.option('--build-number', type=int, help='Bump build number to this one')
+@click.option(
+    '--build-number-next', is_flag=True, help='Bump build number to the next one'
+)
+def bump(**kwargs):
+    mixin = Mixin(**kwargs)
+    if kwargs.get('version') or kwargs.get('version_next'):
+        mixin.bump_version(to_value=kwargs.get('version'))
+    if kwargs.get('build_number') or kwargs.get('build_number_next'):
+        mixin.bump_build_number(to_value=kwargs.get('build_number'))
+
+
 main.add_command(codesign, name='codesign')
 
 

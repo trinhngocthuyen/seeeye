@@ -2,12 +2,14 @@ from cicd.core.mixin.core import CoreMixin
 
 from .cocoapods import CocoaPodsMixin
 from .simulator import SimulatorMixin
+from .version import VersionMixin
 
 
 class BaseIOSMixin(
     CoreMixin,
     SimulatorMixin,
     CocoaPodsMixin,
+    VersionMixin,
 ):
     def __init__(self, **kwargs) -> None:
         self.kwargs = kwargs
