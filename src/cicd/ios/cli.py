@@ -41,6 +41,16 @@ opts = Opts(
     shard_idx=click.option(
         '--shard-idx', type=int, help='The shard idx (starting with 1)'
     ),
+    version=click.option('--version', type=str, help='Bump version to this one'),
+    version_next=click.option(
+        '--version-next', is_flag=True, help='Bump version to the next one'
+    ),
+    build_number=click.option(
+        '--build-number', type=int, help='Bump build number to this one'
+    ),
+    build_number_next=click.option(
+        '--build-number-next', is_flag=True, help='Bump build number to the next one'
+    ),
 )
 
 xcodebuild_opts = opts.use(
@@ -61,6 +71,13 @@ xcodebuild_opts = opts.use(
     'shard_idx',
 )
 
+version_opts = opts.use(
+    'version',
+    'version_next',
+    'build_number',
+    'build_number_next',
+)
+
 
 @click.group()
 def main():
@@ -71,6 +88,7 @@ def main():
 @click.option('--build-for-testing', is_flag=True, help='Build for testing')
 @click.option('--cocoapods', is_flag=True, help='Run pod install beforehand')
 @xcodebuild_opts
+@version_opts
 def build(**kwargs):
     Mixin(**kwargs).start_building()
 
@@ -84,6 +102,7 @@ def build(**kwargs):
     '--parallel-testing-workers', type=int, help='Number of parallel testing workers'
 )
 @xcodebuild_opts
+@version_opts
 def test(**kwargs):
     Mixin(**kwargs).start_testing()
 
@@ -98,6 +117,7 @@ def test(**kwargs):
 @click.option('--archive-path', help='Archive path')
 @click.option('--cocoapods', is_flag=True, help='Run pod install beforehand')
 @xcodebuild_opts
+@version_opts
 def archive(**kwargs):
     Mixin(**kwargs).start_archiving()
 
@@ -111,18 +131,9 @@ def cov(**kwargs):
 
 
 @main.command
-@click.option('--version', type=str, help='Bump version to this one')
-@click.option('--version-next', is_flag=True, help='Bump version to the next one')
-@click.option('--build-number', type=int, help='Bump build number to this one')
-@click.option(
-    '--build-number-next', is_flag=True, help='Bump build number to the next one'
-)
+@version_opts
 def bump(**kwargs):
-    mixin = Mixin(**kwargs)
-    if kwargs.get('version') or kwargs.get('version_next'):
-        mixin.bump_version(to_value=kwargs.get('version'))
-    if kwargs.get('build_number') or kwargs.get('build_number_next'):
-        mixin.bump_build_number(to_value=kwargs.get('build_number'))
+    Mixin().bump(**kwargs)
 
 
 main.add_command(codesign, name='codesign')

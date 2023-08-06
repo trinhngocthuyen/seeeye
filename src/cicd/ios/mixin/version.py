@@ -27,6 +27,12 @@ class VersionMixin(MetadataMixin):
     def build_number(self) -> int:
         return self._from_build_settings(key='CURRENT_PROJECT_VERSION', dtype=int)
 
+    def bump(self, **kwargs):
+        if kwargs.get('version') or kwargs.get('version_next'):
+            self.bump_version(to_value=kwargs.get('version'))
+        if kwargs.get('build_number') or kwargs.get('build_number_next'):
+            self.bump_build_number(to_value=kwargs.get('build_number'))
+
     def bump_version(self, to_value: t.Optional[str] = None) -> Version:
         to_value = Version(to_value) if to_value else self.version.next()
         logger.info(f'Bump version to: {to_value}')
