@@ -1,3 +1,6 @@
+%:
+	cd ../.. && make $@
+
 bootstrap:
 	sh scripts/bootstrap.sh
 
@@ -6,9 +9,3 @@ install:
 
 build:
 	sh scripts/build.sh
-
-test:
-	sh scripts/test.sh
-
-format:
-	cd ../.. && make format

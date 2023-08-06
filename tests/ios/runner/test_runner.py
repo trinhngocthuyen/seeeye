@@ -6,27 +6,44 @@ from cicd.ios.runner.base import Runner
 
 
 @pytest.fixture
-def sut(bag):
+def mock_errors():
+    return [RuntimeError(f'Failed on attempt #{i}') for i in range(3)]
+
+
+@pytest.fixture
+def mock_action_cls(bag, mock_errors):
     bag._tries = 0
 
-    def run_action(**kwargs):
-        bag._tries += 1
-        if bag._tries < 3:
-            raise RuntimeError(f'Failed on attempt #{bag._tries}')
+    class MockAction:
+        def __init__(self, **kwargs) -> None:
+            pass
 
-    this = Runner()
-    with mock.patch(
-        'cicd.ios.runner.base.Runner.action_cls',
-        new_callable=mock.PropertyMock(return_value=bag.action_cls),
-    ):
-        bag.action_cls().run = run_action
-        yield this
+        def run(self):
+            bag._tries += 1
+            if bag._tries < 3:
+                raise mock_errors[bag._tries]
+
+    return MockAction
 
 
-def test_retries_success(sut: Runner):
-    sut.run(retries=2)
+@pytest.fixture
+def sut():
+    return Runner()
 
 
-def test_retries_error(sut: Runner):
+def test_retries_success(sut: Runner, mock_action_cls, bag, mock_errors):
+    kwargs = dict(retries=2, retry_kwargs_fn=bag.retry_kwargs_fn)
+    bag.retry_kwargs_fn.return_value = kwargs
+    sut.run(action_cls=mock_action_cls, **kwargs)
+    bag.retry_kwargs_fn.assert_has_calls(
+        [
+            mock.call(kwargs, {'error': None, 'idx': 0}),
+            mock.call(kwargs, {'error': mock_errors[1], 'idx': 1}),
+            mock.call(kwargs, {'error': mock_errors[2], 'idx': 2}),
+        ],
+    )
+
+
+def test_retries_error(sut: Runner, mock_action_cls):
     with pytest.raises(RuntimeError, match='Failed on attempt #2'):
-        sut.run(retries=1)
+        sut.run(action_cls=mock_action_cls, retries=1)
