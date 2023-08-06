@@ -30,28 +30,27 @@ class Runner:
         def error(self) -> t.Optional[Exception]:
             return self.get('error')
 
-    def run(self, **kwargs):
+    def run(self, action_cls: t.Type[Action], **kwargs):
         timeout_in_sec = kwargs.get('timeout')
         tries = (kwargs.get('retries') or 0) + 1
         retry_kwargs_fn = kwargs.get('retry_kwargs_fn')
-        ctx = Runner.RetryContext()
+        ctx = Runner.RetryContext(idx=0, error=None)
 
         @retry(tries=tries, logger=logger)
         def run_without_timeout():
             if callable(retry_kwargs_fn):
-                retry_kwargs = retry_kwargs_fn(kwargs, ctx)
+                retry_kwargs = retry_kwargs_fn(kwargs, ctx.copy())
             else:
                 retry_kwargs = kwargs
 
-            action = self.action_cls(**retry_kwargs)
+            action = action_cls(**retry_kwargs)
 
             try:
                 return action.run()
             except Exception as e:
+                ctx['idx'] = ctx.idx + 1
                 ctx['error'] = e
                 raise e
-            finally:
-                ctx['idx'] = ctx.idx + 1
 
         if not timeout_in_sec:
             return run_without_timeout()
@@ -61,7 +60,3 @@ class Runner:
             return run_without_timeout()
 
         return run_with_timeout()
-
-    @property
-    def action_cls(self) -> t.Type[Action]:
-        raise NotImplementedError
