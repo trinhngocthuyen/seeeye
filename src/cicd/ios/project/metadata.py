@@ -25,6 +25,10 @@ class Metadata:
             logger.warning('Multiple xcode projects are detected')
         return paths[0]
 
+    @property
+    def pbxproj_path(self) -> Path:
+        return self.xcodeproj_path / 'project.pbxproj'
+
     @cached_property
     def xcworkspace_path(self) -> t.Optional[Path]:
         paths = list(self.workdir.glob('*.xcworkspace'))
