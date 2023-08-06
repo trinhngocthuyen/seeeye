@@ -14,8 +14,7 @@ SWIFT_VERSION = 5.0;
 
 
 @pytest.fixture
-def pbxproj_path(tmp_path, monkeypatch):
-    monkeypatch.chdir(tmp_path)
+def pbxproj_path(tmp_path):
     path = tmp_path / 'EX.xcodeproj' / 'project.pbxproj'
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(gen_pbxproj_content(version='0.0.1', build_number=1))
