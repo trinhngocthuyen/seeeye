@@ -43,3 +43,7 @@ def test_version_bump(sut: VersionMixin, pbxproj_path):
     assert pbxproj_path.read_text() == gen_pbxproj_content(
         version='0.0.9', build_number=9
     )
+
+    sut.bump(version='1.0.0', build_number='100')
+    assert sut.version == Version('1.0.0')
+    assert sut.build_number == 100
