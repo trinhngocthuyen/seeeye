@@ -1,5 +1,4 @@
 from pathlib import Path
-from unittest import mock
 
 import pytest
 
@@ -7,22 +6,46 @@ from cicd.ios.project.metadata import Metadata
 
 
 @pytest.fixture
-def bag(tmp_path: Path):
-    this = mock.MagicMock()
-    this.xcodeproj_path = tmp_path / 'EX.xcodeproj'
-    this.xcworkspace_path = tmp_path / 'EX.xcworkspace'
-    this.xcodeproj_path.write_text('')
-    this.xcworkspace_path.mkdir()
-    with mock.patch(
-        'cicd.ios.project.metadata.Metadata.workdir',
-        new_callable=mock.PropertyMock,
-    ) as mock_workdir:
-        mock_workdir.return_value = tmp_path
-        yield this
+def schemes():
+    return ['EX']
 
 
-def test_project_metadata_mixin(monkeypatch, bag):
-    metadata = Metadata()
-    assert metadata.project_name == 'EX'
-    assert metadata.xcodeproj_path == bag.xcodeproj_path
-    assert metadata.xcworkspace_path == bag.xcworkspace_path
+@pytest.fixture
+def sut(tmp_path, schemes):
+    (tmp_path / 'EX.xcworkspace').mkdir()
+    (tmp_path / 'EX.xcodeproj').mkdir()
+    for scheme in schemes:
+        scheme_path = (
+            tmp_path
+            / 'EX.xcodeproj'
+            / 'xcshareddata'
+            / 'xcschemes'
+            / f'{scheme}.xcscheme'
+        )
+        scheme_path.parent.mkdir(parents=True, exist_ok=True)
+        scheme_path.touch()
+    return Metadata()
+
+
+def test_project_metadata_mixin(sut: Metadata):
+    assert sut.project_name == 'EX'
+    assert sut.schemes == ['EX']
+    assert sut.scheme == 'EX'
+    assert sut.workdir == Path()
+    assert sut.xcodeproj_path == Path('EX.xcodeproj')
+    assert sut.pbxproj_path == Path('EX.xcodeproj/project.pbxproj')
+    assert sut.xcworkspace_path == Path('EX.xcworkspace')
+
+
+@pytest.mark.parametrize('schemes', [[]])
+def test_no_scheme_warning(sut: Metadata, caplog):
+    assert sut.schemes == []
+    assert sut.scheme is None
+    assert 'Detect no shared scheme' in caplog.text
+
+
+@pytest.mark.parametrize('schemes', [['EX', 'EX2']])
+def test_multiple_schemes_warning(sut: Metadata, caplog):
+    assert sut.scheme == 'EX'
+    assert sut.schemes == ['EX', 'EX2']
+    assert 'Detect multiple schemes' in caplog.text

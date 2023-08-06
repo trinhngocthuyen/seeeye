@@ -36,10 +36,21 @@ class Metadata:
 
     @cached_property
     def schemes(self) -> t.List[str]:
-        return [
+        detected = [
             p.with_suffix('').name
             for p in self.workdir.glob('*.xcodeproj/xcshareddata/xcschemes/*.xcscheme')
         ]
+        if not detected:
+            logger.warning(
+                'Detect no shared scheme. Please mark your scheme as shared in Xcode'
+            )
+        if len(detected) > 1:
+            logger.warning(
+                f'Detect multiple schemes: {detected}. '
+                f'The first one will be chosen: {detected[0]}. '
+                f'To specify the scheme, use the `-scheme` option.'
+            )
+        return detected
 
     @property
     def scheme(self) -> t.Optional[str]:
