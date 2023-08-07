@@ -5,7 +5,7 @@ To archive the project using the CLI
 
 .. code-block:: console
 
-    $ cicd ios archive --profiles <app_bundle_id>:<provisioning_profile_name>
+    $ cicd ios archive
 
 .. note::
 
