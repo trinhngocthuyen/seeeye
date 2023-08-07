@@ -4,11 +4,11 @@ from functools import cached_property
 from pathlib import Path
 
 from cicd.core.action import Action
-from cicd.ios.mixin.metadata import MetadataMixin
+from cicd.ios.mixin.project import ProjectMixin
 from cicd.ios.syntax.xcresult import XCResult
 
 
-class IOSAction(Action, MetadataMixin):
+class IOSAction(Action, ProjectMixin):
     xcresult: t.Optional[XCResult]
     xcarchive_path: t.Optional[Path]
 

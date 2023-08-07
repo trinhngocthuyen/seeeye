@@ -4,7 +4,7 @@ import typing as t
 from cicd.core.logger import logger
 from cicd.core.version import Version
 
-from .metadata import MetadataMixin
+from .project import MetadataMixin
 
 T = t.TypeVar('T')
 

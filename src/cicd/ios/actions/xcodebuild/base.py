@@ -2,7 +2,7 @@ import typing as t
 
 from cicd.core.utils.sh import sh
 from cicd.ios.actions.base import IOSAction
-from cicd.ios.mixin.metadata import MetadataMixin
+from cicd.ios.mixin.project import MetadataMixin
 
 __all__ = ['XCBAction']
 

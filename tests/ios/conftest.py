@@ -13,5 +13,5 @@ def mock_derived_data_path(bag, tmp_path: Path):
 
 @pytest.fixture
 def mock_metadata_mixin(bag):
-    with mock.patch('cicd.ios.mixin.metadata.MetadataMixin.metadata', bag.metadata):
+    with mock.patch('cicd.ios.mixin.project.MetadataMixin.metadata', bag.metadata):
         yield

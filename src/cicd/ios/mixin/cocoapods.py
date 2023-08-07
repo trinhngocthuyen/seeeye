@@ -2,7 +2,7 @@ from functools import cached_property
 
 from cicd.core.utils.sh import sh
 
-from .metadata import MetadataMixin
+from .project import MetadataMixin
 
 
 class CocoaPodsMixin(MetadataMixin):

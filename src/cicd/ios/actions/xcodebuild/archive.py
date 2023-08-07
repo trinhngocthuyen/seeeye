@@ -42,12 +42,27 @@ class XCBArchiveAction(XCBAction):
         def profiles_mapping() -> t.Dict[str, t.Any]:
             profiles = self.kwargs.get('profiles')
             if not profiles:
-                return {}
+                self.logger.info(
+                    'Profiles mapping was not specified. Will resolve from build settings'
+                )
+                build_settings = self.project.resolve_build_settings(
+                    action='archive', **self.kwargs
+                )
+                bundle_id = build_settings.get('PRODUCT_BUNDLE_IDENTIFIER')
+                profile = build_settings.get('PROVISIONING_PROFILE_SPECIFIER')
+                return {bundle_id: profile} if bundle_id and profile else {}
             return dict([tuple(kv.split(':')) for kv in profiles.split(',')])
 
+        mapping = profiles_mapping()
+        if not mapping:
+            self.logger.warning(
+                'Profiles mapping is empty. This usually results in error when exporting to the ipa. '
+                'Consider specifying `PROVISIONING_PROFILE_SPECIFIER` in the build settings '
+                'or using the `--profiles` in the CLI.'
+            )
         return {
             'method': self.kwargs.get('export_method') or 'app-store',
-            'provisioningProfiles': profiles_mapping(),
+            'provisioningProfiles': mapping,
         }
 
     def export_ipa(self, in_dir: Path):
