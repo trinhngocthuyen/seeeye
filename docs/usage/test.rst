@@ -11,6 +11,16 @@ To test the project using the CLI
 
     To see the usage of the CLI, run with the argument ``--help``. Example: ``cicd --help``
 
+Test Retries
+~~~~~~~~~~~~
+
+Sometimes, you might encounter flaky tests which intermittently fail. One common approach to deal with them is to retry failed tests. This toolkit offers a convenient way to achieve that. Simply use the ``--retries`` option in the CLI.
+
+.. code-block:: console
+
+    $ cicd ios test --retries 1
+
+
 Test Sharding
 ~~~~~~~~~~~~~
 
