@@ -34,12 +34,11 @@ class XCBCmdMaker(CmdMaker):
         if xctestrun:
             workspace, scheme = None, None
             project, target = None, None
-        elif workspace or scheme:
+        elif workspace or scheme:  # `-workspace` requires `-scheme`
             workspace = workspace or self.metadata.xcworkspace_path  # prefill
             scheme = scheme or self.metadata.scheme  # prefill
             project, target = None, None
         elif project or target:
-            # TODO: prefill target?
             project = project or self.metadata.xcodeproj_path  # prefill
             workspace, scheme = None, None
         elif self.metadata.xcworkspace_path:
@@ -47,6 +46,7 @@ class XCBCmdMaker(CmdMaker):
             scheme = self.metadata.scheme
         elif self.metadata.xcodeproj_path:
             project = self.metadata.xcodeproj_path
+            scheme = self.metadata.scheme
 
         simulator = self.kwargs.pop('_simulator', None)
         if simulator:
