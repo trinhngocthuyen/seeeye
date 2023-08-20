@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 
 try:
     import colorlog
@@ -30,7 +31,7 @@ def default_formatter():
 
 
 def setup_logger(name) -> logging.Logger:
-    handler = logging.StreamHandler()
+    handler = logging.StreamHandler(stream=sys.stdout)
     formatter = default_formatter()
     handler.setFormatter(formatter)
     this = logging.getLogger(name=name)
