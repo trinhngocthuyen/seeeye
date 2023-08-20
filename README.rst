@@ -4,6 +4,7 @@ seeeye (CI/CD toolkits for mobile apps)
 .. _readthedocs: https://seeeye.readthedocs.io/
 .. _contributing guidelines: https://seeeye.readthedocs.io/en/latest/contributing.html
 .. _fastlane: https://fastlane.tools
+.. _FAQ: https://seeeye.readthedocs.io/en/latest/faq.html#python-setup
 
 .. image:: https://github.com/trinhngocthuyen/seeeye/workflows/test/badge.svg
     :target: https://github.com/trinhngocthuyen/seeeye/actions/workflows/test.yml
@@ -31,12 +32,12 @@ Installation
 
    $ pip install --upgrade seeeye
 
-Usage
------
+First time hearing ``pip``? Check this `FAQ`_.
 
-Kindly check out the related docs on readthedocs_:
+Getting Started
+---------------
 
-- `Usage <https://seeeye.readthedocs.io/en/latest/usage/index.html>`_
+Check this out: `Getting Started <https://seeeye.readthedocs.io/en/latest/getting_started/index.html>`_ 🎉.
 
 Documentation
 -------------

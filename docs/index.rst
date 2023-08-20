@@ -4,8 +4,9 @@
    :caption: Table of Contents
    :hidden:
 
+   getting_started/index
    api/reference
-   usage/index
+   faq
    contributing
 
 Indices and tables
