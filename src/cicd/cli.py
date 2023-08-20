@@ -5,6 +5,7 @@ from cicd.ios.cli import main as ios
 
 
 @click.group()
+@click.version_option(package_name='seeeye')
 def main():
     pass
 
