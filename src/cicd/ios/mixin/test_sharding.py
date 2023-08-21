@@ -1,6 +1,7 @@
 import typing as t
 
 from cicd.core.mixin.core import CoreMixin
+from cicd.core.syntax.json import JSON
 from cicd.ios.actions.test_extraction import TestExtractionAction
 
 
@@ -8,7 +9,11 @@ class TestShardingMixin(CoreMixin):
     __test__ = False
 
     def extract_tests(self, **kwargs) -> t.List[str]:
-        return TestExtractionAction(**kwargs).run()
+        output_path = kwargs.pop('output_path', None)
+        data = TestExtractionAction(**kwargs).run()
+        if output_path:
+            JSON(data=data).save(output_path)
+        return data
 
     def test_sharding(self, **kwargs) -> t.List[t.List[str]]:
         n_shards = kwargs.get('shards', 0)

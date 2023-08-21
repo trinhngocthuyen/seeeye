@@ -130,6 +130,13 @@ def cov(**kwargs):
     Mixin(**kwargs).start_parsing_cov()
 
 
+@main.command()
+@click.option('--output-path', help='The output path')
+@opts.use('derived_data_path')
+def extract_tests(**kwargs):
+    print(Mixin().extract_tests(**kwargs))
+
+
 @main.command
 @version_opts
 def bump(**kwargs):
