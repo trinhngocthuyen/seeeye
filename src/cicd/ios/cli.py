@@ -1,8 +1,9 @@
 import click
 
 from cicd.core._cli.opts import Opts
-from cicd.ios.codesign.cli import main as codesign
+from cicd.ios.codesign.cli import main as codesign_cli
 from cicd.ios.mixin.mono import MonoMixin as Mixin
+from cicd.ios.syntax.xcresult import main as xcresult_cli
 
 opts = Opts(
     workspace=click.option('--workspace', type=str, help='Path to the xcworkspace'),
@@ -143,7 +144,8 @@ def bump(**kwargs):
     Mixin().bump(**kwargs)
 
 
-main.add_command(codesign, name='codesign')
+main.add_command(codesign_cli, name='codesign')
+main.add_command(xcresult_cli, name='xcresult')
 
 
 if __name__ == '__main__':

@@ -3,6 +3,8 @@ import typing as t
 from functools import cached_property
 from pathlib import Path
 
+import click
+
 from cicd.core.syntax.json import JSON
 
 
@@ -94,10 +96,6 @@ class TestItemData(JSON):
     def duration(self) -> float:
         return self.query('duration._value')
 
-    @property
-    def is_success(self) -> bool:
-        return self.status == 'Success'
-
 
 class TestsData(JSON):
     @cached_property
@@ -141,13 +139,41 @@ class XCResult(XCResultToolMixin):
         return self.extract_raw(id=self.metadata.tests_ref_id).as_type(TestsData)
 
     @property
-    def test_summaries(self) -> t.List[TestItemData]:
-        return self.tests_data.summaries
+    def test_summaries(self) -> t.List[t.Dict[str, t.Any]]:
+        return [
+            {
+                'name': summary.fullname,
+                'status': summary.status,
+                'duration': summary.duration,
+            }
+            for summary in self.tests_data.summaries
+        ]
 
     @property
     def tests(self) -> t.List[str]:
-        return [x.fullname for x in self.test_summaries]
+        return [x['name'] for x in self.test_summaries]
 
     @property
     def failed_tests(self) -> t.List[str]:
-        return [x.fullname for x in self.test_summaries if not x.is_success]
+        return [x['name'] for x in self.test_summaries if x['status'] != 'Success']
+
+    def export_summaries(self, path: t.Union[str, Path]):
+        JSON(data=self.test_summaries, path=path).save(indent=2)
+
+
+@click.group()
+def main(**kwargs):
+    pass
+
+
+@main.command()
+@click.option('--path', required=True, help='Path to the xcresult bundle')
+@click.option('--export-path', help='Path to export the test summaries')
+def export(**kwargs):
+    xcresult = XCResult(path=kwargs.get('path'))
+    if export_path := kwargs.get('export_path'):
+        xcresult.export_summaries(path=export_path)
+
+
+if __name__ == '__main__':
+    main()
