@@ -30,6 +30,9 @@ class Runner:
         def error(self) -> t.Optional[Exception]:
             return self.get('error')
 
+        def copy(self) -> 'Runner.RetryContext':
+            return Runner.RetryContext(super().copy())
+
     def run(self, action_cls: t.Type[Action], **kwargs):
         timeout_in_sec = kwargs.get('timeout')
         tries = (kwargs.get('retries') or 0) + 1
