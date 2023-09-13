@@ -19,7 +19,7 @@ if [[ "${ONLY_TESTING}" == "EXTests" ]]; then
 fi
 
 function _exec_build() {
-    python3 -m cicd.ios.cli build \
+    cicd ios build \
         ${common_args[@]} \
         --build-for-testing
 }
@@ -35,7 +35,7 @@ function _exec_test() {
             --shard-idx ${SHARD_IDX:-0}
         )
     fi
-    python3 -m cicd.ios.cli test \
+    cicd ios test \
         ${common_args[@]} \
         ${args[@]} \
         --retries 1 \
@@ -43,7 +43,7 @@ function _exec_test() {
 }
 
 function _exec_cov() {
-    python3 -m cicd.ios.cli cov \
+    cicd ios cov \
         ${common_args[@]} \
         --config .cov.yml \
         --export .artifacts/cov/cov.json
