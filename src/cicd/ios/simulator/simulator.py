@@ -45,9 +45,10 @@ class DeviceType(dict):
 
 
 class Simulator(dict, SimCtlMixin):
+    T = t.TypeVar('T', bound='Simulator')
     _runtimes: t.List[Runtime]
     _device_types: t.List[DeviceType]
-    _devices: t.List['Simulator']
+    _devices: t.List[T]
 
     def __init__(self, **kwargs):
         def dashify(s: str) -> str:
@@ -156,7 +157,7 @@ class Simulator(dict, SimCtlMixin):
     def delete(self):
         self.simctl('delete', shlex.quote(self.name or self.identifier))
 
-    def prepare(self) -> 'Simulator':
+    def prepare(self) -> T:
         with self._sync():
             if self._find_simulator():
                 return self
@@ -171,7 +172,7 @@ class Simulator(dict, SimCtlMixin):
         pass
 
     @staticmethod
-    def from_xcodebuild_destination(destination: str) -> t.Optional['Simulator']:
+    def from_xcodebuild_destination(destination: str) -> T | None:
         params = dict(tuple(cmp.split('=')) for cmp in destination.split(','))
         if params.get('platform') == 'iOS Simulator':
             return Simulator(

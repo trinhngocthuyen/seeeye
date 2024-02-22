@@ -1,4 +1,3 @@
-import typing as t
 from functools import cached_property
 from pathlib import Path
 from shlex import quote
@@ -13,8 +12,8 @@ from .report import CovReport
 class Cov:
     def __init__(
         self,
-        xcresult_path: t.Union[str, Path],
-        config_path: t.Union[str, Path, None] = None,
+        xcresult_path: str | Path,
+        config_path: str | Path | None = None,
     ):
         self.xcresult_path = xcresult_path
         self.config_path = config_path or '.cov.yml'

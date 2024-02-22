@@ -55,9 +55,9 @@ class Keychain:
 
     def import_cert(
         self,
-        path: t.Union[str, Path],
-        password: t.Union[str, None] = None,
-        whitelisted_apps: t.Optional[t.List[str]] = None,
+        path: str | Path,
+        password: str | None = None,
+        whitelisted_apps: t.List[str] | None = None,
     ):
         cmd = 'security import {} -P {} -k {}'.format(
             sh.quote(path),

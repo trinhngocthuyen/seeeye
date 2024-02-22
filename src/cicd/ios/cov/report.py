@@ -10,9 +10,7 @@ from .config import CovConfig
 
 
 class CovReport:
-    def __init__(
-        self, raw: t.Union[JSON, t.Dict[str, t.Any]], config: CovConfig
-    ) -> None:
+    def __init__(self, raw: JSON | t.Dict[str, t.Any], config: CovConfig) -> None:
         self.raw = raw
         self.config = config
 
@@ -68,7 +66,7 @@ class CovReport:
             'files': self.files_data,
         }
 
-    def export(self, path: t.Union[str, Path]):
+    def export(self, path: str | Path):
         exported_data = {
             'summary': self.summary_data,
             'breakdown': self.breakdown_data,

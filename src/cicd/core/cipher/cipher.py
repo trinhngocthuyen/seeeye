@@ -1,5 +1,4 @@
 import base64
-import typing as t
 from enum import Enum
 from pathlib import Path
 
@@ -37,7 +36,7 @@ class Cipher:
     def _perform(
         self,
         action: Action,
-        input: t.Union[bytes, str],
+        input: bytes | str,
     ) -> bytes:
         fn = {
             Cipher.Action.ENCRYPTION: self.fernet.encrypt,
@@ -49,7 +48,7 @@ class Cipher:
         self,
         action: Action,
         in_path: StrPath,
-        out_path: t.Optional[StrPath] = None,
+        out_path: StrPath | None = None,
     ):
         def transform_suffix(suffix: str) -> str:
             if action == Cipher.Action.ENCRYPTION:

@@ -7,7 +7,8 @@ import typing as t
 class ProviderInfo:
     '''A data class that holds info of the CI provider such as Github Actions, Gitlab, or CircleCI.'''
 
-    shared: t.Optional['ProviderInfo'] = None
+    T = t.TypeVar('T', bound='ProviderInfo')
+    shared: T | None = None
 
     def __init__(self, name: str, module: str) -> None:
         self.name = name

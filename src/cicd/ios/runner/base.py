@@ -27,7 +27,7 @@ class Runner:
             return self.get('idx', 0)
 
         @property
-        def error(self) -> t.Optional[Exception]:
+        def error(self) -> Exception | None:
             return self.get('error')
 
         def copy(self) -> 'Runner.RetryContext':

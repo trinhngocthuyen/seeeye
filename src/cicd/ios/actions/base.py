@@ -9,8 +9,8 @@ from cicd.ios.syntax.xcresult import XCResult
 
 
 class IOSAction(Action, ProjectMixin):
-    xcresult: t.Optional[XCResult]
-    xcarchive_path: t.Optional[Path]
+    xcresult: XCResult | None
+    xcarchive_path: Path | None
 
     @cached_property
     def derived_data_path(self) -> Path:
