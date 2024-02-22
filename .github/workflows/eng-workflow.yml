@@ -7,6 +7,9 @@ on:
         description: Bump version
         type: boolean
 
+env:
+  PYTHON_VERSION: '3.10'
+
 jobs:
   bump-version:
     if: ${{ inputs.bump-version }}

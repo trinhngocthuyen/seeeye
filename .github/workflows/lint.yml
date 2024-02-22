@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  PYTHON_VERSION: '3.10'
+
 jobs:
   pre-commit:
     name: pre-commit

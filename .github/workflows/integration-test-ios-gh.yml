@@ -12,6 +12,9 @@ on:
       - 'examples/ios/**'
       - 'scripts/**'
 
+env:
+  PYTHON_VERSION: '3.10'
+
 jobs:
   build:
     runs-on: macos-12 # https://github.com/actions/virtual-environments (xcode 13.4.1)
