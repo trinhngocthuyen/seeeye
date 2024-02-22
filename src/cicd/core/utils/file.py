@@ -10,7 +10,7 @@ from cicd.core.typing import StrPath
 class FileUtils:
     @contextmanager
     @staticmethod
-    def tempdir() -> Path:
+    def tempdir():
         dir = tempfile.mkdtemp()
         yield Path(dir)
         shutil.rmtree(dir, ignore_errors=True)

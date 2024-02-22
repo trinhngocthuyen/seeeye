@@ -8,10 +8,10 @@ T = t.TypeVar('T', bound='DataRepresentedObject')
 class DataRepresentedObject:
     def __init__(
         self,
-        data: t.Union[t.Dict[str, t.Any], t.List[t.Dict[str, t.Any]], None] = None,
-        path: t.Union[str, Path, None] = None,
+        data: t.Dict[str, t.Any] | t.List[t.Dict[str, t.Any]] | None = None,
+        path: str | Path | None = None,
     ) -> None:
-        self.data: t.Union[t.Dict[str, t.Any], t.List[t.Dict[str, t.Any]]] = data
+        self.data: t.Dict[str, t.Any] | t.List[t.Dict[str, t.Any]] = data
         self.path = path
         if data is None and path:
             try:
@@ -26,7 +26,7 @@ class DataRepresentedObject:
     def _write_data(self, data, f):
         raise NotImplementedError
 
-    def save(self, path: t.Union[str, Path, None] = None, **kwargs):
+    def save(self, path: str | Path | None = None, **kwargs):
         p = Path(path or self.path)
         p.parent.mkdir(parents=True, exist_ok=True)
         with open(p, 'w') as f:
@@ -38,9 +38,9 @@ class DataRepresentedObject:
     def query(
         self,
         key: str,
-        as_type: t.Optional[t.Type[T]] = None,
-    ) -> t.Union[T, t.Dict[str, t.Any], t.List[t.Dict[str, t.Any]], None]:
-        def str_or_int(s: str) -> t.Union[str, int]:
+        as_type: t.Type[T] | None = None,
+    ) -> T | t.Dict[str, t.Any] | t.List[t.Dict[str, t.Any]] | None:
+        def str_or_int(s: str) -> str | int:
             try:
                 return int(s)
             except ValueError:

@@ -1,10 +1,8 @@
-import typing as t
-
 from cicd.ios.simulator import Simulator
 
 
 class SimulatorMixin:
-    simulator: t.Optional[Simulator] = None
+    simulator: Simulator | None = None
 
     def prepare_simulator(self, **kwargs):
         destination = kwargs.get('destination')

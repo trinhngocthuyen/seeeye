@@ -16,8 +16,8 @@ class ArchiveError(Exception):
 class XCBArchiveAction(XCBAction):
     '''A class that interacts with the xcodebuild command, particularly for archive actions.'''
 
-    ipa_path: t.Optional[Path] = None
-    dsym_path: t.Optional[Path] = None
+    ipa_path: Path | None = None
+    dsym_path: Path | None = None
 
     def run(self):
         kwargs = self.kwargs
@@ -67,7 +67,7 @@ class XCBArchiveAction(XCBAction):
 
     def export_ipa(self, in_dir: Path):
         class XCBExportCmdMaker(CmdMaker):
-            def make(self) -> t.Optional[str]:
+            def make(self) -> str | None:
                 cmps = ['xcodebuild', '-exportArchive'] + self.args_from_dict(
                     {
                         'archivePath': self.kwargs.get('archive_path'),

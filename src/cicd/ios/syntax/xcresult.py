@@ -12,10 +12,10 @@ class XCResultTool:
     def exec(
         self,
         cmd: str,
-        cmd_args: t.Optional[t.List[str]] = None,
+        cmd_args: t.List[str] | None = None,
         cmd_kwargs: t.Optional[t.Dict[str, t.Any]] = None,
         to_json=False,
-    ) -> t.Union[JSON, str]:
+    ) -> JSON | str:
         if cmd_args is None:
             cmd_args = []
         if cmd_kwargs is None:
@@ -29,9 +29,7 @@ class XCResultTool:
             output = JSON.from_str(output)
         return output
 
-    def get(
-        self, path: t.Union[str, Path], id: t.Optional[str] = None, to_json=False
-    ) -> t.Union[JSON, str]:
+    def get(self, path: str | Path, id: str | None = None, to_json=False) -> JSON | str:
         cmd_kwargs = {'path': str(path)}
         if id:
             cmd_kwargs['id'] = id
@@ -58,7 +56,7 @@ class Metadata(JSON):
 
 class TestItemData(JSON):
     @cached_property
-    def uri(self) -> t.Optional[str]:
+    def uri(self) -> str | None:
         # NOTE: This uri is not available in Xcode 13.2.1
         return self.query('identifierURL._value')
 
@@ -123,7 +121,7 @@ class TestsData(JSON):
 class XCResult(XCResultToolMixin):
     def __init__(
         self,
-        path: t.Optional[t.Union[str, Path]] = None,
+        path: str | Path | None = None,
     ) -> None:
         self.path = path
 
@@ -157,7 +155,7 @@ class XCResult(XCResultToolMixin):
     def failed_tests(self) -> t.List[str]:
         return [x['name'] for x in self.test_summaries if x['status'] != 'Success']
 
-    def export_summaries(self, path: t.Union[str, Path]):
+    def export_summaries(self, path: str | Path):
         JSON(data=self.test_summaries, path=path).save(indent=2)
 
 

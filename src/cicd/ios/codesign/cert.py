@@ -1,11 +1,9 @@
-import typing as t
-
 from cicd.core.logger import logger
 from cicd.core.typing import StrPath
 
 
 class Certificate:
-    def __init__(self, path: StrPath, password: t.Optional[str] = None) -> None:
+    def __init__(self, path: StrPath, password: str | None = None) -> None:
         self.path = path
         self.password = password or ''
 

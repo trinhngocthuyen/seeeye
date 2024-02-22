@@ -30,7 +30,7 @@ class Metadata:
         return self.xcodeproj_path / 'project.pbxproj'
 
     @cached_property
-    def xcworkspace_path(self) -> t.Optional[Path]:
+    def xcworkspace_path(self) -> Path | None:
         paths = list(self.workdir.glob('*.xcworkspace'))
         return paths[0] if paths else None
 
@@ -53,7 +53,7 @@ class Metadata:
         return detected
 
     @property
-    def scheme(self) -> t.Optional[str]:
+    def scheme(self) -> str | None:
         return self.schemes[0] if self.schemes else None
 
     def bundle_enabled(self, name) -> bool:
@@ -64,7 +64,7 @@ class Metadata:
             except:
                 return False
 
-    def resolve_program(self, name) -> t.Optional[str]:
+    def resolve_program(self, name) -> str | None:
         if self.bundle_enabled(name):
             return f'bundle exec {name}'
         if shutil.which(name):

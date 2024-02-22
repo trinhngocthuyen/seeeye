@@ -3,8 +3,6 @@ from functools import cached_property
 
 from cicd.core.provider.info import ProviderInfo
 
-T = t.TypeVar('T', bound='ProviderMixin')
-
 
 class ProviderMixin:
     '''A mixin that provides helpers to resolve the responsible class
@@ -22,7 +20,8 @@ class ProviderMixin:
     :notes: Use this mixin on the abstract class, not the concrete class.
     '''
 
-    __provider_info__: t.Optional[ProviderInfo] = None
+    T = t.TypeVar('T', bound='ProviderMixin')
+    __provider_info__: ProviderInfo | None = None
 
     @cached_property
     def provider(self: T) -> T:

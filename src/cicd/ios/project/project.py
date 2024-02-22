@@ -1,5 +1,3 @@
-import typing as t
-
 from cicd.core.utils.sh import sh
 
 from .build_settings import BuildSettings
@@ -7,7 +5,7 @@ from .metadata import Metadata
 
 
 class Project:
-    def __init__(self, metadata: t.Optional[Metadata] = None) -> None:
+    def __init__(self, metadata: Metadata | None = None) -> None:
         self.metadata = metadata or Metadata()
 
     def resolve_build_settings(self, **kwargs) -> BuildSettings:

@@ -12,8 +12,8 @@ class Client:
     Clients are per-class singletons.
     '''
 
-    BASE_URL: t.Optional[str] = None
-    token: t.Optional[str] = None
+    BASE_URL: str | None = None
+    token: str | None = None
 
     def __new__(cls):
         if hasattr(cls, 'instance') and isinstance(getattr(cls, 'instance'), cls):
@@ -23,8 +23,8 @@ class Client:
 
     def config(
         self: T,
-        base_url: t.Optional[str] = None,
-        token: t.Optional[str] = None,
+        base_url: str | None = None,
+        token: str | None = None,
         **kwargs,
     ) -> T:
         '''Config the client.
@@ -52,7 +52,7 @@ class Client:
 
     def make_paging_params(
         self,
-        paging: t.Union[int, t.Tuple[int, int], t.List[int]],
+        paging: int | t.Tuple[int, int] | t.List[int],
     ) -> t.Dict[str, t.Any]:
         '''Make up paging params for request params.'''
 
@@ -66,10 +66,10 @@ class Client:
         self,
         endpoint: str,
         method: str = 'get',
-        as_type: t.Optional[t.Type[D]] = None,
+        as_type: t.Type[D] | None = None,
         to_list: bool = False,
         **kwargs,
-    ) -> t.Optional[D]:
+    ) -> D | None:
         '''Make an API request.
 
         :param endpoint: The API endpoint.

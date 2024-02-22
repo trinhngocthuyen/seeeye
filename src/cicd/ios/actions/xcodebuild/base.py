@@ -11,7 +11,7 @@ class CmdMaker(MetadataMixin):
     def __init__(self, **kwargs) -> None:
         self.kwargs = kwargs
 
-    def make(self) -> t.Optional[str]:
+    def make(self) -> str | None:
         raise NotImplementedError
 
     def args_from_dict(self, ds: t.Dict[str, t.Any]) -> t.List[str]:
@@ -21,7 +21,7 @@ class CmdMaker(MetadataMixin):
 
 
 class XCBCmdMaker(CmdMaker):
-    def make(self) -> t.Optional[str]:
+    def make(self) -> str | None:
         xctestrun = self.kwargs.get('xctestrun')
         workspace = self.kwargs.get('workspace')
         scheme = self.kwargs.get('scheme')
@@ -87,7 +87,7 @@ class XCBCmdMaker(CmdMaker):
 
 
 class LogCmdMaker(CmdMaker):
-    def make(self) -> t.Optional[str]:
+    def make(self) -> str | None:
         return (
             self.kwargs.get('log_formatter')
             or self.metadata.resolve_program('xcbeautify')
@@ -96,7 +96,7 @@ class LogCmdMaker(CmdMaker):
 
 
 class TeeCmdMaker(CmdMaker):
-    def make(self) -> t.Optional[str]:
+    def make(self) -> str | None:
         log_path = self.kwargs.get('log_path')
         if log_path:
             return f'tee {sh.quote(log_path)}'
