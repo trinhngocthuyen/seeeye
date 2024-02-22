@@ -13,8 +13,6 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
 ]
 keywords = ["ci", "cd", "ci/cd", "mobile", "ios"]
@@ -29,7 +27,7 @@ dependencies = [
     "pydantic",
     "cryptography",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 
 [project.scripts]
 cicd = 'cicd.cli:main'
