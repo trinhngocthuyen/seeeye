@@ -9,15 +9,13 @@ try:
 except:
     _has_colorlog = False
 
-__all__ = ['logger']
 
-
-def default_formatter():
-    format_str = '[%(asctime)s] [%(levelname)s] %(message)s'
-    date_format = '%H:%M:%S'
+def default_formatter(fmt=None):
+    fmt = fmt or '[%(asctime)s] [%(levelname)s] %(message)s'
+    datefmt = '%H:%M:%S'
     # Enable colorlog if you run from terminal or on CI environment
     if _has_colorlog and (os.isatty(2) or os.environ.get('CI')):
-        cformat = '%(log_color)s' + format_str
+        cformat = '%(log_color)s' + fmt
         colors = {
             'DEBUG': 'white',
             'INFO': 'green',
@@ -25,14 +23,14 @@ def default_formatter():
             'ERROR': 'red',
             'CRITICAL': 'bold_red',
         }
-        return colorlog.ColoredFormatter(cformat, date_format, log_colors=colors)
+        return colorlog.ColoredFormatter(cformat, datefmt, log_colors=colors)
     else:
-        return logging.Formatter(format_str, date_format)
+        return logging.Formatter(fmt, datefmt)
 
 
-def setup_logger(name) -> logging.Logger:
+def setup_logger(name, fmt=None) -> logging.Logger:
     handler = logging.StreamHandler(stream=sys.stdout)
-    formatter = default_formatter()
+    formatter = default_formatter(fmt=fmt)
     handler.setFormatter(formatter)
     this = logging.getLogger(name=name)
     this.setLevel(logging.DEBUG)
